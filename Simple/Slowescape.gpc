@@ -1,0 +1,141 @@
+// MAIN BLOCK
+//-----------------------------------------------------
+main { 
+    // si la touche R3 est pressé lancer le combo maxcmb
+    if(event_press(PS4_R3))combo_run(maxcmb);                                                     
+                                                   
+}
+      
+      
+// COMBO BLOCK
+// ----------------------------------------------------
+
+
+combo SLE {
+   set_val(PS4_SQUARE, 100); // presse carré
+   wait(20)					 // pendant 20 ms
+   
+// tourner le joystick 
+// tour = 1
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_LEFT,100);
+   wait(10);
+
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_LEFT,100);
+   set_val(PS4_DOWN,100);
+   wait(10);
+
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_DOWN,100);
+   wait(10);
+
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_DOWN,100); 
+   set_val(PS4_RIGHT,100);  
+   wait(10);
+
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_RIGHT,100);  
+   wait(10);
+
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_RIGHT,100);
+   set_val(PS4_UP,100);
+   wait(10);
+
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_UP,100);
+   wait(10);
+
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_UP,100);
+   set_val(PS4_LEFT,100);
+   wait(10);
+
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_LEFT,100);
+   wait(10);
+
+// tour 2
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_LEFT,100);
+   wait(10);
+
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_LEFT,100);
+   set_val(PS4_DOWN,100);
+   wait(10);
+
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_DOWN,100);
+   wait(10);
+
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_DOWN,100); 
+   set_val(PS4_RIGHT,100);  
+   wait(10);
+
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_RIGHT,100);  
+   wait(10);
+
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_RIGHT,100);
+   set_val(PS4_UP,100);
+   wait(10);
+
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_UP,100);
+   wait(10);
+
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_UP,100);
+   set_val(PS4_LEFT,100);
+   wait(10);
+
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_LEFT,100);
+   wait(10);
+   
+   // tour 3
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_LEFT,100);
+   wait(10);
+
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_LEFT,100);
+   set_val(PS4_DOWN,100);
+   wait(10);
+
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_DOWN,100);
+   wait(10);
+
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_DOWN,100); 
+   set_val(PS4_RIGHT,100);  
+   wait(10);
+
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_RIGHT,100);  
+   wait(10);
+
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_RIGHT,100);
+   set_val(PS4_UP,100);
+   wait(10);
+
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_UP,100);
+   wait(10);
+
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_UP,100);
+   set_val(PS4_LEFT,100);
+   wait(10);
+
+   set_val(PS4_SQUARE, 100);
+   set_val(PS4_LEFT,100);
+   wait(10);
+}
