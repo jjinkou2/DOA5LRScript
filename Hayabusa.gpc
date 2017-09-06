@@ -1,0 +1,375 @@
+// Script was generated with < Script Manipulator > ver. 13.6 Date :09/05/17 Time: 14:32:03
+//------------------------------------------------------------------------
+                                                                        
+define BTN1                                    =  17; // TRIANGLE, Y 
+define BTN2                                    =  18; // CIRCLE, B  
+define BTN3                                    =  19; // CROSS, A 
+define BTN4                                    =  20; // SQUARE, X 
+define BTN5                                    =   3; // R1, RB    
+define BTN6                                    =   4; // R2, RT    
+define BTN7                                    =   6; // L1, LB    
+define BTN8                                    =   7; // L2, LT    
+define TOUCH                                   =  27; // TOUCH PAD   
+define UP                                      =  13; // DPAD UP   
+define DOWN                                    =  14; // DPAD DOWN 
+define LEFT                                    =  15; // DPAD LEFT  
+define RIGHT                                   =  16; // DPAD RIGHT  
+define MOVE_X                                  =  11; // LEFT ANALOG X 
+define MOVE_Y                                  =  12; // LEFT ANALOG Y 
+//-----------------------------------------------------
+define BACK             = 128; // BACK FLAG    
+define FORWARD          = 129; // FORWARD FLAG 
+                                        
+                                        
+// End Flags. 254 and 255 should never be used in the 
+// data segment for other purposes.                  
+//-----------------------------------------------------
+define EOC              = 254; // End of Combo      
+define EOD              = 255; // End of Data Segment 
+//-----------------------------------------------------
+define HighH                                   =  0;
+define MidH                                    =  1;
+define LowH                                    =  2;
+define Izuna								   =  3;
+define KoreanBackdash						   =  4;
+
+
+
+data(
+HighH,
+1,FORWARD,
+4,
+0,4,
+3,BACK,
+UP,
+BTN4,
+4,
+0,30,
+1,DOWN,
+4,
+0,4,
+1,BACK,
+4,
+0,4,
+1,UP,
+4,
+0,4,
+1,BTN4,
+4,
+0,30,
+1,UP,
+4,
+0,4,
+1,BACK,
+4,
+0,4,
+1,DOWN,
+4,
+0,4,
+1,FORWARD,
+4,
+0,4,
+2,UP,
+BTN4,
+4,
+0,4,
+EOC,
+MidH,
+1,FORWARD,
+4,
+0,4,
+2,BACK,
+BTN4,
+4,
+0,30,
+1,DOWN,
+4,
+0,4,
+1,BACK,
+4,
+0,4,
+1,UP,
+4,
+0,4,
+1,BTN4,
+4,
+0,50,
+1,UP,
+4,
+0,4,
+1,BACK,
+4,
+0,4,
+1,DOWN,
+4,
+0,4,
+1,FORWARD,
+4,
+0,4,
+2,UP,
+BTN4,
+4,
+0,4,
+EOC,
+LowH,
+1,FORWARD,
+4,
+0,4,
+3,BACK,
+DOWN,
+BTN4,
+4,
+0,30,
+1,DOWN,
+4,
+0,4,
+1,BACK,
+4,
+0,4,
+1,UP,
+4,
+0,4,
+1,BTN4,
+4,
+0,80,
+1,UP,
+4,
+0,4,
+1,BACK,
+4,
+0,4,
+1,DOWN,
+4,
+0,4,
+1,FORWARD,
+4,
+0,4,
+2,UP,
+BTN4,
+4,
+0,4,
+EOC,
+Izuna,
+1,BACK,
+4,
+0,4,
+1,DOWN,
+4,
+0,4,
+2,FORWARD,
+BTN3,
+4,
+0,50,
+1,DOWN,
+4,
+0,4,
+1,FORWARD,
+4,
+0,4,
+2,UP,
+BTN3,
+4,
+0,50,
+1,UP,
+4,
+0,4,
+1,BACK,
+4,
+0,4,
+1,DOWN,
+4,
+0,4,
+1,FORWARD,
+4,
+0,4,
+2,UP,
+BTN3,
+4,
+0,4,
+EOC,
+KoreanBackdash,
+1,BACK,
+6,
+0,6,
+1,BACK,
+6,
+0,6,
+2,DOWN,
+BACK,
+6,
+0,6,
+1,BACK,
+6,
+0,6,
+EOC,
+EOD );
+
+int i = -1, b, v;
+int back = LEFT, forward = RIGHT;
+int button_1, button_2, button_3, button_4, button_5;  
+int wait_time;                               
+int switch;                               
+int delay_t;                               
+int RUMBLE_TYPE=RUMBLE_A;                 
+int cancel;                 
+int EndOfCombo;             
+int CanStart;               
+                                             
+main {                                       
+                                             
+                                             
+                                             
+    // Determine Back and Forward            
+    if(get_val(RIGHT) || get_val(MOVE_X) >= 30) { 
+        back = LEFT; forward = RIGHT;             
+    } else if(get_val(LEFT) || get_val(MOVE_X) <= -30) {
+        back = RIGHT; forward = LEFT;           
+    }//----------------------------------------------
+                                             
+                                             
+                                                
+    // If there is a combo to be executed       
+    if(i >= 0 && delay_t<=0) {                                
+        // Execute the combo step-by-step       
+        if(!combo_running(execute_step)) {      
+            if(get_step_values()) {              
+                if(wait_time == 0) {               
+                    combo_run(execute_step_no_wait);
+                } else {                         
+                    combo_run(execute_step);     
+                }                                
+            } else { // the combo finished       
+                i = -1;                          
+            }                                    
+        }                                         
+                                                  
+                                                    
+        // Make sure the user inputs does not interfere in the combo 
+        set_val(BTN1                                    , 0);                       
+        set_val(BTN2                                    , 0);                       
+        set_val(BTN3                                    , 0);                       
+        set_val(BTN4                                    , 0);                       
+        set_val(BTN5                                    , 0);                        
+        set_val(BTN6                                    , 0);                        
+        set_val(BTN7                                    , 0);                        
+        set_val(BTN8                                    , 0);                        
+        set_val(UP                                      , 0);                        
+        set_val(DOWN                                    , 0);                        
+        set_val(LEFT                                    , 0);                        
+        set_val(RIGHT                                   , 0);                        
+        set_val(MOVE_X                                  , 0);                        
+        set_val(MOVE_Y                                  , 0);                        
+                                                         
+    // if no combo execute - look for combo activation  
+    } else {                                       
+    // EDIT THIS PART OF SCRIPT for combo run ---------------------------
+//////////////////////////////////////////////////////////////////////////
+        // RS DOWN
+        if (get_val(PS4_RY)>=60) {   //combo LowH       
+        i = get_combo_index(LowH); 
+        } 
+        // Right Stick LEFT                                               
+        if (get_val (PS4_RX) <= -60) {   //combo MidH       
+        i = get_combo_index(MidH); 
+        }
+        // Right Stick RIGHT                                               
+        if (get_val (PS4_RX) >= 60) {   //combo Izuna       
+        i = get_combo_index(Izuna); 
+        }
+		// RS UP
+        if (get_val(PS4_RY)<=-60) {   //combo HighH       
+        i = get_combo_index(HighH); 
+        } 
+    // end editing here --------------------------------------------------------------------
+/////////////////////////////////////////////////////////////////////////////////////////////
+    }// <combo activation> end 
+}//<main> block end                                 
+                                                    
+// This combo will run a step with wait             
+combo execute_step {                                
+    set_buttons_values();                           
+    wait(wait_time);                                
+    set_buttons_values();                          
+}                                                  
+                                                   
+// This combo will run a step without wait         
+combo execute_step_no_wait {                       
+    set_buttons_values();                          
+}                                                  
+                                                   
+                                                   
+combo RUMBLE_NOTIFICATION {                        
+    set_rumble(RUMBLE_TYPE, 100);                     
+    wait(300);             
+    reset_rumble ();                             
+}                                                  
+                                                   
+// Returns the starting index of a combo           
+function get_combo_index(combo_id) {               
+    i = 0;                                         
+    while(TRUE) {//-----------------------         
+        v = dbyte(i);                              
+        if(v == combo_id) {                        
+            return(i + 1);                         
+        } else {//====================             
+            while(v != EOC && v != EOD) {//#       
+                i = i + 1;                         
+                v = dbyte(i);                      
+            }//#                                   
+            if(v == EOD) break;                    
+            else i = i + 1;                        
+        }//=============================           
+    }//-----------------------------------         
+    return(-1);                                    
+}                                                  
+                                                   
+// Set the buttons, values and wait time of a step 
+function get_step_values() {                       
+    b = dbyte(i); i = i + 1;                       
+    if(b > 5) return(FALSE);                       
+                                                   
+    if(b >= 1) {                                    
+        button_1 = convert_back_forward(dbyte(i)); i = i + 1;
+    } else { button_1 = -1;  }          
+                                                    
+    if(b >= 2) {                                     
+        button_2 = convert_back_forward(dbyte(i)); i = i + 1;
+    } else { button_2 = -1;  }           
+                                                     
+    if(b >= 3) {                                     
+        button_3 = convert_back_forward(dbyte(i)); i = i + 1; 
+    } else { button_3 = -1;  }           
+                                                     
+    if(b >= 4) {                                     
+        button_4 = convert_back_forward(dbyte(i)); i = i + 1; 
+    } else { button_4 = -1;  }           
+                                                     
+    if(b >= 5) {                                     
+        button_5 = convert_back_forward(dbyte(i)); i = i + 1;
+    } else { button_5 = -1;  }           
+                                                     
+    wait_time = dbyte(i); i = i + 1;                 
+    wait_time = (wait_time - 1) * 10;                
+    if(wait_time < 0) wait_time = 0;                 
+                                                     
+    return(TRUE);                                    
+}                                                    
+                                                      
+// If the step has FORWARD and BACK buttons, set the correct value.
+function convert_back_forward(button) {              
+    if(button == FORWARD) {                          
+        return(forward);                             
+    } else if(button == BACK) {                      
+        return(back);                                
+    }                                                
+    return(button);                                  
+}                                                     
+                                                     
+// Set the buttons and values, function used on the combos.
+function set_buttons_values() {                      
+    if(button_1 != -1) set_val(button_1, 100);   
+    if(button_2 != -1) set_val(button_2, 100);   
+    if(button_3 != -1) set_val(button_3, 100);   
+    if(button_4 != -1) set_val(button_4, 100);   
+    if(button_5 != -1) set_val(button_5, 100);   
+}                                                    
