@@ -1,7 +1,7 @@
 // MAIN BLOCK
 //-----------------------------------------------------
 main { 
-    // si la touche R3 est pressé lancer le combo maxcmb
+    // si la touche R3 est pressée lancer le combo maxcmb
     if(event_press(PS4_R3))combo_run(maxcmb);                                                     
                                                    
 }
