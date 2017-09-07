@@ -27,12 +27,13 @@ define FORWARD          = 129; // FORWARD FLAG
 define EOC              = 254; // End of Combo      
 define EOD              = 255; // End of Data Segment 
 //-----------------------------------------------------
-define HighH                                   =  0;
-define MidH                                    =  1;
-define LowH                                    =  2;
-define Izuna								   =  3;
-define KoreanBackdash						   =  4;
-
+define HighH                            =  0;
+define MidH                             =  1;
+define LowH                             =  2;
+define Izuna							=  3;
+define IzunaPunch						=  4;
+define KoreanBackdash					=  5;
+define SlowEscape						=  6;
 
 
 data(
@@ -187,6 +188,47 @@ BTN3,
 4,
 0,4,
 EOC,
+IzunaPunch,
+1,BTN7,
+11,
+0,9,
+1,BTN1,
+7,
+0,8,
+1,BTN1,
+7,
+0,5,
+1,FORWARD,
+7,
+0,6,
+1,UP,
+5,
+0,2,
+1,BACK,
+1,
+0,7,
+1,DOWN,
+6,
+0,5,
+1,FORWARD,
+6,
+0,5,
+1,UP,
+2,
+1,BACK,
+2,
+2,DOWN,
+BACK,
+1,
+1,DOWN,
+5,
+0,5,
+2,FORWARD,
+BTN3,
+3,
+1,BTN3,
+4,
+EOC,
 KoreanBackdash,
 1,BACK,
 6,
@@ -201,6 +243,82 @@ BACK,
 1,BACK,
 6,
 0,6,
+EOC,
+SlowEscape,
+1,BTN4,
+2,
+1,BTN4,
+1,
+2,BTN4,
+DOWN,
+1,
+2,BTN4,
+DOWN,
+1,
+2,BTN4,
+DOWN,
+1,
+1,BTN4,
+1,
+2,BTN4,
+UP,
+1,
+2,BTN4,
+UP,
+1,
+2,BTN4,
+UP,
+1,
+1,BTN4,
+1,
+1,BTN4,
+1,
+2,BTN4,
+DOWN,
+1,
+2,BTN4,
+DOWN,
+1,
+2,BTN4,
+DOWN,
+1,
+1,BTN4,
+1,
+2,BTN4,
+UP,
+1,
+2,BTN4,
+UP,
+1,
+2,BTN4,
+UP,
+1,
+1,BTN4,
+1,
+1,BTN4,
+1,
+2,BTN4,
+DOWN,
+1,
+2,BTN4,
+DOWN,
+1,
+2,BTN4,
+DOWN,
+1,
+1,BTN4,
+1,
+2,BTN4,
+UP,
+1,
+2,BTN4,
+UP,
+1,
+2,BTN4,
+UP,
+1,
+1,BTN4,
+1,
 EOC,
 EOD );
 
@@ -220,9 +338,9 @@ main {
                                              
                                              
     // Determine Back and Forward            
-    if(get_val(RIGHT) || get_val(MOVE_X) >= 30) { 
+    if(get_val(RIGHT) ) { 
         back = LEFT; forward = RIGHT;             
-    } else if(get_val(LEFT) || get_val(MOVE_X) <= -30) {
+    } else if(get_val(LEFT) ) {
         back = RIGHT; forward = LEFT;           
     }//----------------------------------------------
                                              
@@ -264,22 +382,34 @@ main {
     } else {                                       
     // EDIT THIS PART OF SCRIPT for combo run ---------------------------
 //////////////////////////////////////////////////////////////////////////
-        // RS DOWN
-        if (get_val(PS4_RY)>=60) {   //combo LowH       
+        // SlowEscape sur L3
+        if (event_press(PS4_L3)) {i = get_combo_index(IzunaPunch);}
+        
+        // L3 DOWN
+        if (get_val(PS4_LY)>=70) {   //combo LowH       
         i = get_combo_index(LowH); 
         } 
-        // Right Stick LEFT                                               
-        if (get_val (PS4_RX) <= -60) {   //combo MidH       
+  		// L3 UP
+        if (get_val(PS4_LY)<=-60) {   //combo HighH       
+        i = get_combo_index(HighH);       
+        }
+        // L3 LEFT                                               
+        if (get_val (PS4_LX) <= -70) {   //combo MidH       
         i = get_combo_index(MidH); 
         }
-        // Right Stick RIGHT                                               
-        if (get_val (PS4_RX) >= 60) {   //combo Izuna       
+        // L3 RIGHT                                               
+        if (get_val (PS4_LX) >= 70) {   //combo Izuna       
         i = get_combo_index(Izuna); 
         }
-		// RS UP
-        if (get_val(PS4_RY)<=-60) {   //combo HighH       
-        i = get_combo_index(HighH); 
-        } 
+
+        
+        // R3 RIGHT                                               
+        if (get_val (PS4_RX) >= 70) {   //combo Izuna       
+        i = get_combo_index(Izuna); 
+        }
+        // R3 Bas Izuna Punch a faire apres etre acccroupi 
+        if (get_val (PS4_RY) >= 70) {i = get_combo_index(IzunaPunch);}
+     
     // end editing here --------------------------------------------------------------------
 /////////////////////////////////////////////////////////////////////////////////////////////
     }// <combo activation> end 
