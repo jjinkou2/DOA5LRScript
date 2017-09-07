@@ -1,0 +1,81 @@
+int Right;
+int Left;
+
+
+// MAIN BLOCK
+//-----------------------------------------------------
+ main {  
+ 
+ 	// pour inverser les combos selon que le perso est a droite ou a gauche
+   // Si on est a gauche appuyer sur DPAD Droite
+ 	 if(get_val(PS4_RIGHT)){Right=PS4_RIGHT;Left=PS4_LEFT;}
+   // sinon appuyer sur DPAD Gauche 
+ 	 if(get_val(PS4_LEFT)){Right=PS4_LEFT;Left=PS4_RIGHT;}
+             
+             
+    // lancement des combos
+    //----------------------
+
+    // si la touche L3 est appuyée lancer le combo Kick
+    if(get_val (PS4_R3))combo_run(Kick);                                                     
+                                                   
+    // Toryu avec  L3 vers la gauche                 
+   	if (get_val (PS4_L3) ) combo_run(Toryu);     
+}
+      
+      
+// COMBO BLOCK
+// ----------------------------------------------------
+
+
+combo Kick {
+	set_val(PS4_SQUARE, 100);
+	set_val(PS4_CIRCLE, 100);
+	wait(18);
+	set_val(PS4_SQUARE, 0);
+	set_val(PS4_CIRCLE, 100);
+	wait(140);
+	set_val(PS4_CIRCLE, 0);
+}
+
+combo Toryu{
+	set_val(PS4_DOWN, 100);
+	wait(90);
+	set_val(PS4_DOWN, 0);
+	set_val(PS4_RIGHT, 100);
+	wait(40);
+	set_val(PS4_L1, 100);
+	set_val(PS4_RIGHT, 100);
+	wait(90);
+	set_val(PS4_L1, 100);
+	set_val(PS4_RIGHT, 0);
+	wait(90);
+	set_val(PS4_L1, 0);
+	wait(90);
+
+	set_val(Left,100);
+    wait(150);
+    set_val(Left,0);
+    set_val(Right,100);
+    set_val(PS4_DOWN,100);
+    set_val(PS4_L1,100);    
+    wait(90);
+    wait(250);
+/*
+    set_val(PS4_DOWN,100);
+    wait(140);
+    wait(140);
+    set_val(Right,100);
+    set_val(PS4_TRIANGLE,100);
+    wait(140);
+    wait(250);
+
+	set_val(Left,100);
+    wait(140);
+    wait(140);
+    set_val(Right,100);
+    set_val(PS4_L1,100);
+    wait(140);
+    wait(140);
+*/
+}

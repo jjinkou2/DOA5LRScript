@@ -1,0 +1,22 @@
+// MAIN BLOCK
+//-----------------------------------------------------
+main { 
+    // si la touche R3 est pressée lancer le combo maxcmb
+    if(event_press(PS4_L3))combo_run(monCombo);                                                     
+                                                   
+}
+      
+      
+// COMBO BLOCK
+// ----------------------------------------------------
+
+
+combo monCombo {
+   set_val(PS4_SQUARE, 100); // presse carré
+   wait(20)					 // pendant 20 ms 
+   wait(1000);				// attendre 1 s
+
+   set_val(PS4_DOWN,100);
+   wait(10);
+   wait(1000);				// attendre 1 s
+}
