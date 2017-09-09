@@ -12,3 +12,7 @@ http://cronusmax.com/forums/showthread.php/148238-How-to-record-and-run-your-own
 Liste des touches PS4
 ---------------------
 http://cronusmax.com/manual/identifiers_print.htm
+
+commencer a ecrire un script:
+-----------------------------
+http://cronusmax.com/manual/a_simple_tutorial.htm
