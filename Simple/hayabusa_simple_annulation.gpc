@@ -47,21 +47,19 @@ main {
    	if (get_val (PS4_LY) <= -70) combo_run (HighH);             
  
  	// Izuna = R3 vers la droite 
-        if (get_val (PS4_RX) >= 70) combo_run (Izuna); 
+    if (get_val (PS4_RX) >= 70) combo_run (Izuna); 
  
- 	// CANCEL combos condition-----------------------------------------
-        // RS X and Y are in rest - cancel the combo 
-       if(cancel==1){            
-            if ( (abs(get_val (9)) <= 20 && abs(get_val (10)) <= 20) ) { 
-            i = -1;                        
-            combo_stop(execute_step);      
-            } 
-        }else if(cancel==2){
-            if ( (abs(get_val (11)) <= 20 && abs(get_val (12)) <= 20) ) { 
-            i = -1;                        
-            combo_stop(execute_step);      
-            } 
-        }
+ 	// Stopper un combo en cours d'execution
+ 	// -------------------------------------
+    // Detecter si RX est revenu en position de départ 
+    if ((abs(get_val (PS4_RX)) <= 20) combo_stop(Izuna);  // arret du combo Izuna 
+    // Si L3 n'est plus vers la gauche (LX)            
+    if (abs(get_val (PS4_LX)) <= 20) combo_stop(MidH);
+    // Si L3 n'est plus en haut ni en bas
+    if (abs(get_val (PS4_LY)) <= 20)) { // abs permet de tester le haut et le bas 
+            combo_stop(LowH);		// Arrêt des 2 combos      
+            combo_stop(HighH);		// même s'ils ne sont pas lancés
+    } 
    
 }// main block end
 

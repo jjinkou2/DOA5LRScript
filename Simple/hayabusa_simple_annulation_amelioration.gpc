@@ -3,9 +3,13 @@
 
 	// variables
 	// ---------
-int Right = PS4_RIGHT;  // cette variable contiendra la touche droite  
-int Left  = PS4_LEFT;   // idem pour gauche
-
+int Right  = PS4_RIGHT;  // cette variable contiendra la touche droite  
+int Left   = PS4_LEFT;   // idem pour gauche
+int cancel = 0;			 // variable pour indiquer si un combo doit être annulé
+						 // 0 = aucun combo à annuler
+						 // 1 = annuler les combos associés à la touche L3
+						 // 2 = idem pour R3
+						 
 	// echanger les touches lors des combos
 	// ------------------------------------
 remap PS4_SQUARE -> PS4_CROSS;  // le carré deviendra croix
@@ -38,30 +42,56 @@ main {
     if(event_press(PS4_L3)) 	combo_run(SlowEscape);                                                     
                                                        
     // MidH = L3 vers la gauche                 
-   	if (get_val (PS4_LX) <= -70) combo_run(MidH);              	
+   	else if (get_val (PS4_LX) <= -70) { // else = sinon
+   		cancel = 1;						// on positionne la variable 
+   										// d'annulation à 1 car L3 a bougé
+   		combo_run(MidH);				// lancement du combo
+   	}
    
    	// LowH = L3 vers le bas                   
-   	if (get_val (PS4_LY) >= 70) combo_run (LowH);             
+   	else if (get_val (PS4_LY) >= 70) {
+   		cancel = 1;
+   		combo_run (LowH);
+   	}
  
    	// HighH =  L3 vers le Haut                   
-   	if (get_val (PS4_LY) <= -70) combo_run (HighH);             
+   	else if (get_val (PS4_LY) <= -70) {
+   		cancel = 1;
+   		combo_run (HighH);
+   	}
  
  	// Izuna = R3 vers la droite 
-        if (get_val (PS4_RX) >= 70) combo_run (Izuna); 
+    else if (get_val (PS4_RX) >= 70) {
+    	cancel = 2;						// = 2 car c'est R3 qui a bougé
+    	combo_run (Izuna);
+    }
+    
+    else cancel = 0;					// Aucun des joysticks n'a bougé
  
- 	// CANCEL combos condition-----------------------------------------
-        // RS X and Y are in rest - cancel the combo 
-       if(cancel==1){            
-            if ( (abs(get_val (9)) <= 20 && abs(get_val (10)) <= 20) ) { 
-            i = -1;                        
-            combo_stop(execute_step);      
-            } 
-        }else if(cancel==2){
-            if ( (abs(get_val (11)) <= 20 && abs(get_val (12)) <= 20) ) { 
-            i = -1;                        
-            combo_stop(execute_step);      
-            } 
-        }
+ 	// Stopper un combo en cours d'execution
+ 	// -------------------------------------
+ 	//
+ 	// 	La version précédente du script faisait tourner combo_stop 
+ 	//  tout le temps. (car L3 et R3 ne bougent presque jamais.
+ 	//  Grace a la variable cancel on ne lance combo_stop uniquement
+ 	//  s'ils ont bougé
+ 	// -------------------------------------
+ 	
+ 	// Detecter si cancel est a 1 ou 2 
+ 	if (cancel == 1) {  // C'est L3 qui a bougé
+	    // Si L3 n'est plus vers la gauche (LX) ni en haut ni en bas (LY)            
+	    if (abs(get_val (PS4_LX)) <= 20) && (abs(get_val (PS4_LY)) <= 20) {
+	    	combo_stop(MidH);
+            combo_stop(LowH);		// Arrêt des 2 combos      
+            combo_stop(HighH);		// même s'ils ne sont pas lancés
+	    }  	
+ 	}
+ 	else if (cancel == 2) { // c'est R3 qui a bougé
+	    // Detecter si RX est revenu en position de départ 
+	    if ((abs(get_val (PS4_RX)) <= 20) combo_stop(Izuna);  // arret du combo Izuna 
+ 	}
+ 	
+
    
 }// main block end
 
