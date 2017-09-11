@@ -6,10 +6,6 @@
 int Right = PS4_RIGHT;  // cette variable contiendra la touche droite  
 int Left  = PS4_LEFT;   // idem pour gauche
 
-	// echanger les touches lors des combos
-	// ------------------------------------
-remap PS4_SQUARE -> PS4_CROSS;  // le carré deviendra croix
-remap PS4_CROSS	 -> PS4_SQUARE; // croix devient carré
 
 // BOUCLE PRINCIPALE
 // -----------------

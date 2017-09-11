@@ -10,10 +10,6 @@ int cancel = 0;			 // variable pour indiquer si un combo doit être annulé
 						 // 1 = annuler les combos associés à la touche L3
 						 // 2 = idem pour R3
 						 
-	// echanger les touches lors des combos
-	// ------------------------------------
-remap PS4_SQUARE -> PS4_CROSS;  // le carré deviendra croix
-remap PS4_CROSS	 -> PS4_SQUARE; // croix devient carré
 
 // BOUCLE PRINCIPALE
 // -----------------
