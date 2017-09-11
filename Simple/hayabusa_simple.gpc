@@ -49,19 +49,6 @@ main {
  	// Izuna = R3 vers la droite 
         if (get_val (PS4_RX) >= 70) combo_run (Izuna); 
  
- 	// CANCEL combos condition-----------------------------------------
-        // RS X and Y are in rest - cancel the combo 
-       if(cancel==1){            
-            if ( (abs(get_val (9)) <= 20 && abs(get_val (10)) <= 20) ) { 
-            i = -1;                        
-            combo_stop(execute_step);      
-            } 
-        }else if(cancel==2){
-            if ( (abs(get_val (11)) <= 20 && abs(get_val (12)) <= 20) ) { 
-            i = -1;                        
-            combo_stop(execute_step);      
-            } 
-        }
    
 }// main block end
 
