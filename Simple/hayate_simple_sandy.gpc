@@ -1,0 +1,249 @@
+// PHASE initialisation du script
+// ------------------------------
+	// Constantes: Les constantes ne peuvent pas etre modifiées
+	//-----------
+define DOA_H  = PS4_CROSS
+define DOA_T  = PS4_SQUARE
+define DOA_P  = PS4_TRIANGLE
+define DOA_K  = PS4_CIRCLE
+define DOA_PK = PS4_L1
+define DOA_TK = PS4_R1
+
+	// variables: Les variables peuvent etre modifiées par le programme
+	// ---------
+int Right = PS4_RIGHT;  // cette variable contiendra la touche droite  
+int Left  = PS4_LEFT;   // idem pour gauche
+
+
+
+// BOUCLE PRINCIPALE
+// -----------------
+main { 
+
+   // pour inverser les combos selon que le perso est a droite ou a gauche
+   // Si le perso est a gauche appuyer sur DPAD Droite avant de faire un combo 
+
+	if(get_val(PS4_RIGHT)) {
+ 	 	Right=16;   // 16 = PS4_RIGHT cf . http://cronusmax.com/manual/identifiers.htm
+ 	 	Left=15;    // 15 = PS4_LEFT
+ 	 }
+   
+   // sinon appuyer sur DPAD Gauche  avant de lancer les combos
+   // Le perso est a droite de l'écran il faut inverser les combos !
+ 	
+ 	if(get_val(PS4_LEFT)) {
+ 	 	Right=15;  // Right prend la valeur PS4_LEFT dans les combos 
+ 	 	Left=16;   // Left devient PS4_RIGHT  (ligne 57)
+ 	 }
+             
+             
+    // Lancement des combos
+    //----------------------
+    
+    // Slow Escape appuie sur L3
+    if(event_press(PS4_L3)) 	combo_run(SlowEscape);                                                     
+                                                       
+    // Raijin avec  L3 vers la gauche                 
+   	if (get_val (PS4_LX) <= -60) combo_run(Raijin);              	
+   
+   	// Nakiryu avec R3 vers la droite                   
+   	if (get_val (PS4_RX) >= 60) combo_run (Nakiryu);             
+   	  
+   
+  
+   
+}// main block end
+
+
+// LISTE DES COMBOS
+//-----------------
+
+// Pour faire fonctionner un combo a droite ou a gauche
+// il faut changer dans le combo tous les PS4_RIGHT en Right
+// et tous les PS4_LLEFT en Left
+
+combo Raijin  {
+    set_val(Left,100);  // Si le perso est a droite alors left = PS4_LEFT (ligne 24)
+    					// sinon il est a gauche et left = PS4_RIGHT (ligne 32)
+    wait(40);			// appuyer la touche pendant 40 ms
+    wait(40);			// relacher et attendre pendant 40ms
+    set_val(PS4_DOWN,100);
+    wait(40);
+    wait(40);
+    set_val(Right,100); // Right = PS4_RIGHT (ligne 23) ou PS4_LEFT (ligne 31)
+    set_val(DOA_T,100);
+    wait(40);
+    wait(250);
+    set_val(Right,100);
+    wait(40);
+    wait(40);
+    set_val(Left,100);
+    wait(40);
+    wait(40);
+    set_val(PS4_UP,100);
+    wait(40);
+    wait(40);
+    set_val(PS4_DOWN,100);
+    set_val(DOA_T,100);
+    wait(40);
+    wait(1000);
+    set_val(PS4_UP,100);
+    set_val(Right,100);
+    wait(40);
+    wait(40);
+    set_val(PS4_DOWN,100);
+    set_val(Left,100);
+    wait(40);
+    wait(40);
+    set_val(PS4_UP,100);
+    set_val(Left,100);
+    wait(40);
+    wait(40);
+    set_val(Right,100);
+    set_val(PS4_DOWN,100);
+    set_val(DOA_T,100);
+    wait(40);
+    wait(40);
+} // end combo
+combo Nakiryu  {
+    set_val(Left,100);
+    wait(40);
+    wait(40);
+    set_val(PS4_DOWN,100);
+    wait(40);
+    wait(40);
+    set_val(Right,100);
+    set_val(DOA_T,100);
+    wait(40);
+    wait(500);
+    set_val(Left,100);
+    wait(40);
+    wait(40);
+    set_val(Left,100);
+    set_val(DOA_T,100);
+    wait(40);
+    wait(1000);
+    set_val(Left,100);
+    wait(40);
+    wait(40);
+    set_val(Right,100);
+    wait(40);
+    wait(40);
+    set_val(Right,100);
+    set_val(Right,100);
+    set_val(DOA_T,100);
+    wait(40);
+    wait(40);
+} // end combo
+combo SlowEscape  {
+    set_val(DOA_T,100);
+    wait(20);
+    set_val(DOA_T,100);
+    set_val(Left,100);
+    wait(10);
+    set_val(DOA_T,100);
+    set_val(Left,100);
+    set_val(PS4_DOWN,100);
+    wait(10);
+    set_val(DOA_T,100);
+    set_val(PS4_DOWN,100);
+    wait(10);
+    set_val(DOA_T,100);
+    set_val(PS4_DOWN,100);
+    set_val(Right,100);
+    wait(10);
+    set_val(DOA_T,100);
+    set_val(Right,100);
+    wait(10);
+    set_val(DOA_T,100);
+    set_val(Right,100);
+    set_val(PS4_UP,100);
+    wait(10);
+    set_val(DOA_T,100);
+    set_val(PS4_UP,100);
+    wait(10);
+    set_val(DOA_T,100);
+    set_val(PS4_UP,100);
+    set_val(Left,100);
+    wait(10);
+    set_val(DOA_T,100);
+    set_val(Left,100);
+    wait(10);
+    set_val(DOA_T,100);
+    set_val(Left,100);
+    wait(10);
+    set_val(DOA_T,100);
+    set_val(Left,100);
+    set_val(PS4_DOWN,100);
+    wait(10);
+    set_val(DOA_T,100);
+    set_val(PS4_DOWN,100);
+    wait(10);
+    set_val(DOA_T,100);
+    set_val(PS4_DOWN,100);
+    set_val(Right,100);
+    wait(10);
+    set_val(DOA_T,100);
+    set_val(Right,100);
+    wait(10);
+    set_val(DOA_T,100);
+    set_val(Right,100);
+    set_val(PS4_UP,100);
+    wait(10);
+    set_val(DOA_T,100);
+    set_val(PS4_UP,100);
+    wait(10);
+    set_val(DOA_T,100);
+    set_val(PS4_UP,100);
+    set_val(Left,100);
+    wait(10);
+    set_val(DOA_T,100);
+    set_val(Left,100);
+    wait(10);
+    set_val(DOA_T,100);
+    set_val(Left,100);
+    wait(10);
+    set_val(DOA_T,100);
+    set_val(Left,100);
+    set_val(PS4_DOWN,100);
+    wait(10);
+    set_val(DOA_T,100);
+    set_val(PS4_DOWN,100);
+    wait(10);
+    set_val(DOA_T,100);
+    set_val(PS4_DOWN,100);
+    set_val(Right,100);
+    wait(10);
+    set_val(DOA_T,100);
+    set_val(Right,100);
+    wait(10);
+    set_val(DOA_T,100);
+    set_val(Right,100);
+    set_val(PS4_UP,100);
+    wait(10);
+    set_val(DOA_T,100);
+    set_val(PS4_UP,100);
+    wait(10);
+    set_val(DOA_T,100);
+    set_val(PS4_UP,100);
+    set_val(Left,100);
+    wait(10);
+    set_val(DOA_T,100);
+    set_val(Left,100);
+    wait(10);
+} // end combo
+combo KoreanBackdash  {
+    set_val(Left,100);
+    wait(60);
+    wait(60);
+    set_val(Left,100);
+    wait(60);
+    wait(60);
+    set_val(PS4_DOWN,100);
+    set_val(Left,100);
+    wait(60);
+    wait(60);
+    set_val(Left,100);
+    wait(60);
+    wait(60);
+} // end combo
