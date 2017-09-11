@@ -1,17 +1,39 @@
-int Right;
-int Left;
+// PHASE initialisation du script
+// ------------------------------
+
+	// variables
+	// ---------
+int Right = PS4_RIGHT;  // cette variable contiendra la touche droite  
+int Left  = PS4_LEFT;   // idem pour gauche
+
+	// echanger les touches lors des combos
+	// ------------------------------------
+remap PS4_SQUARE -> PS4_CROSS;  // le carré deviendra croix
+remap PS4_CROSS	 -> PS4_SQUARE; // croix devient carré
 
 
+// BOUCLE PRINCIPALE
+// -----------------
 main { 
 
- // pour inverser les combos selon que le perso est a droite ou a gauche
-   // Si on est a gauche appuyer sur DPAD Droite ou L3 vers la Droite
- 	 if(get_val(PS4_RIGHT)){Right=16;Left=15;}
-   // sinon appuyer sur DPAD Gauche ou L3 vers la gauche 
- 	 if(get_val(PS4_LEFT)){Right=15;Left=16;}
+   // pour inverser les combos selon que le perso est a droite ou a gauche
+   // Si le perso est a gauche appuyer sur DPAD Droite avant de faire un combo 
+
+	if(get_val(PS4_RIGHT)) {
+ 	 	Right=16;   // 16 = PS4_RIGHT cf . http://cronusmax.com/manual/identifiers.htm
+ 	 	Left=15;    // 15 = PS4_LEFT
+ 	 }
+   
+   // sinon appuyer sur DPAD Gauche  avant de lancer les combos
+   // Le perso est a droite de l'écran il faut inverser les combos !
+ 	
+ 	if(get_val(PS4_LEFT)) {
+ 	 	Right=15;  // Right prend la valeur PS4_LEFT dans les combos 
+ 	 	Left=16;   // Left devient PS4_RIGHT  (ligne 57)
+ 	 }
              
              
-    // lancement des combos
+    // Lancement des combos
     //----------------------
     
     // Slow Escape appuie sur L3
@@ -29,17 +51,18 @@ main {
 }// main block end
 
 
-// liste des combos
-
+// LISTE DES COMBOS
+//-----------------
 
 combo Raijin  {
-    set_val(Left,100);
-    wait(40);
-    wait(40);
+    set_val(Left,100);  // Si le perso est a droite alors left = PS4_LEFT (ligne 24)
+    					// sinon il est a gauche et left = PS4_RIGHT (ligne 32)
+    wait(40);			// appuyer la touche pendant 40 ms
+    wait(40);			// relacher et attendre pendant 40ms
     set_val(PS4_DOWN,100);
     wait(40);
     wait(40);
-    set_val(Right,100);
+    set_val(Right,100); // Right = PS4_RIGHT (ligne 23) ou PS4_LEFT (ligne 31)
     set_val(PS4_CROSS,100);
     wait(40);
     wait(250);
