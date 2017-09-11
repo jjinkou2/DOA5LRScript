@@ -78,7 +78,7 @@ combo Kick2 {
 }
 
 
-combo Kick {
+combo Kick {// https://virtuafighter.com/threads/iaigeri-flash-sword-kick-execution-thread.19980/
 	set_val(PS4_RIGHT, 100);
 	wait(120);
 	set_val(PS4_RIGHT, 100);
