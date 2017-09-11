@@ -1,0 +1,41 @@
+int Right;
+int Left;
+
+
+// MAIN BLOCK
+//-----------------------------------------------------
+ main {  
+ 
+ 	// pour inverser les combos selon que le perso est a droite ou a gauche
+   // Si on est a gauche appuyer sur DPAD Droite ou L3 vers la Droite
+ 	 if(get_val(PS4_RIGHT)){Right=16;Left=15;}
+   // sinon appuyer sur DPAD Gauche ou L3 vers la gauche 
+ 	 if(get_val(PS4_LEFT)){Right=15;Left=16;}
+             
+             
+    // lancement des combos
+    //----------------------
+
+    // si la touche L3 est vers la gauche lancer le combo Kick
+    if(get_val (PS4_R3))combo_run(Kick);                                                     
+                                                   
+}
+      
+      
+// COMBO BLOCK
+// ----------------------------------------------------
+
+
+combo Kick {
+	set_val(Right, 100);
+	wait(160);
+	set_val(Right, 100);
+	set_val(PS4_CIRCLE, 100);
+	wait(140);
+	set_val(Right, 100);
+	set_val(PS4_CIRCLE, 0);
+	wait(140);
+	set_val(Right, 100);
+	set_val(PS4_SQUARE, 100);
+	wait(70);
+}
