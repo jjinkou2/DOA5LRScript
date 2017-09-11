@@ -33,17 +33,19 @@ main {
     // Slow Escape appuie sur L3
     if(event_press(PS4_L3)) 	combo_run(SlowEscape);                                                     
                                                        
-    // MidH = L3 vers la gauche                 
-   	if (get_val (PS4_LX) <= -70) combo_run(MidH);              	
+    // MidH = L3 vers la gauche   
+    // on test en plus si le combo n'est pas déja lancé '!' pour 
+    // eviter de le relancer lorsque L3 est gardé sur la gauche
+   	if ((get_val (PS4_LX) <= -70) && ! combo_running(MidH)) combo_run(MidH);              	
    
    	// LowH = L3 vers le bas                   
-   	if (get_val (PS4_LY) >= 70) combo_run (LowH);             
+   	if ((get_val (PS4_LY) >= 70) && ! combo_running(LowH)) combo_run (LowH);             
  
    	// HighH =  L3 vers le Haut                   
-   	if (get_val (PS4_LY) <= -70) combo_run (HighH);             
+   	if ((get_val (PS4_LY) <= -70) && ! combo_running(HighH)) combo_run (HighH);             
  
  	// Izuna = R3 vers la droite 
-    if (get_val (PS4_RX) >= 70) combo_run (Izuna); 
+    if ((get_val (PS4_RX) >= 70) && ! combo_running(Izuna)) combo_run (Izuna); 
  
  	// Stopper un combo en cours d'execution
  	// -------------------------------------

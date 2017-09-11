@@ -38,26 +38,26 @@ main {
     if(event_press(PS4_L3)) 	combo_run(SlowEscape);                                                     
                                                        
     // MidH = L3 vers la gauche                 
-   	else if (get_val (PS4_LX) <= -70) { // else = sinon
+   	else if  ((get_val (PS4_LX) <= -70) && ! combo_running(MidH)) { // else = sinon
    		cancel = 1;						// on positionne la variable 
    										// d'annulation à 1 car L3 a bougé
    		combo_run(MidH);				// lancement du combo
    	}
    
    	// LowH = L3 vers le bas                   
-   	else if (get_val (PS4_LY) >= 70) {
+   	else if ((get_val (PS4_LY) >= 70) && ! combo_running(LowH)) {
    		cancel = 1;
    		combo_run (LowH);
    	}
  
    	// HighH =  L3 vers le Haut                   
-   	else if (get_val (PS4_LY) <= -70) {
+   	else if ((get_val (PS4_LY) <= -70) && ! combo_running(HighH)) {
    		cancel = 1;
    		combo_run (HighH);
    	}
  
  	// Izuna = R3 vers la droite 
-    else if (get_val (PS4_RX) >= 70) {
+    else if ((get_val (PS4_RX) >= 70) && ! combo_running(Izuna)) {
     	cancel = 2;						// = 2 car c'est R3 qui a bougé
     	combo_run (Izuna);
     }
@@ -76,7 +76,7 @@ main {
  	// Detecter si cancel est a 1 ou 2 
  	if (cancel == 1) {  // C'est L3 qui a bougé
 	    // Si L3 n'est plus vers la gauche (LX) ni en haut ni en bas (LY)            
-	    if (abs(get_val (PS4_LX)) <= 20) && (abs(get_val (PS4_LY)) <= 20) {
+	    if ((abs(get_val (PS4_LX)) <= 20) && (abs(get_val (PS4_LY)) <= 20)) {
 	    	combo_stop(MidH);
             combo_stop(LowH);		// Arrêt des 2 combos      
             combo_stop(HighH);		// même s'ils ne sont pas lancés
@@ -84,7 +84,7 @@ main {
  	}
  	else if (cancel == 2) { // c'est R3 qui a bougé
 	    // Detecter si RX est revenu en position de départ 
-	    if ((abs(get_val (PS4_RX)) <= 20) combo_stop(Izuna);  // arret du combo Izuna 
+	    if (abs(get_val (PS4_RX)) <= 20) combo_stop(Izuna);  // arret du combo Izuna 
  	}
  	
 

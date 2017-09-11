@@ -2,12 +2,14 @@
 // ------------------------------
 	// Constantes: Les constantes ne peuvent pas etre modifiées
 	//-----------
+    // Config Sandy
+    
 define DOA_H  = PS4_CROSS
-define DOA_T  = PS4_SQUARE
+define DOA_T  = PS4_R1
 define DOA_P  = PS4_TRIANGLE
 define DOA_K  = PS4_CIRCLE
-define DOA_PK = PS4_L1
-define DOA_TK = PS4_R1
+define DOA_PK = PS4_SQUARE
+define DOA_HK = PS4_L2
 
 	// variables: Les variables peuvent etre modifiées par le programme
 	// ---------
