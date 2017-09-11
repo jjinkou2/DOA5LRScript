@@ -54,6 +54,10 @@ main {
 // LISTE DES COMBOS
 //-----------------
 
+// Pour faire fonctionner un combo a droite ou a gauche
+// il faut changer dans le combo tous les PS4_RIGHT en Right
+// et tous les PS4_LLEFT en Left
+
 combo Raijin  {
     set_val(Left,100);  // Si le perso est a droite alors left = PS4_LEFT (ligne 24)
     					// sinon il est a gauche et left = PS4_RIGHT (ligne 32)
