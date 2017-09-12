@@ -102,7 +102,7 @@ main {
 
 	    // Si L3 n'est plus vers la gauche (LX) ni en haut ni en bas (LY)            
 	    if ((abs(get_val (PS4_LX)) <= 20) && (abs(get_val (PS4_LY)) <= 20)) {
-	    	 		set_val(TRACE_1,100);combo_stop(MidH);
+	    	combo_stop(MidH);
             combo_stop(LowH);		// Arrêt des 2 combos      
             combo_stop(HighH);		// même s'ils ne sont pas lancés
 	    }  	
