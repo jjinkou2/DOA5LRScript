@@ -1,5 +1,26 @@
 // PHASE initialisation du script
 // ------------------------------
+	// Constantes: Les constantes ne peuvent pas etre modifiées
+	//-----------
+    // Config Sandy
+    
+define DOA_H  = PS4_CROSS
+define DOA_T  = PS4_R1
+define DOA_P  = PS4_TRIANGLE
+define DOA_K  = PS4_CIRCLE
+define DOA_PK = PS4_SQUARE
+define DOA_HK = PS4_L2
+
+    // Config Laurent
+/*    
+define DOA_H  = PS4_SQUARE
+define DOA_T  = PS4_CROSS
+define DOA_P  = PS4_TRIANGLE
+define DOA_K  = PS4_CIRCLE
+define DOA_PK = PS4_L1
+define DOA_HK = PS4_R1
+*/
+
 
 	// variables
 	// ---------
@@ -34,8 +55,7 @@ main {
     // lancement des combos
     //----------------------
     
-    // Slow Escape appuie sur L3
-    if(event_press(PS4_L3)) 	combo_run(SlowEscape);                                                     
+                                                
                                                        
     // MidH = L3 vers la gauche                 
    	else if  ((get_val (PS4_LX) <= -70) && ! combo_running(MidH)) { // else = sinon
@@ -61,30 +81,38 @@ main {
     	cancel = 2;						// = 2 car c'est R3 qui a bougé
     	combo_run (Izuna);
     }
-    
-    else cancel = 0;					// Aucun des joysticks n'a bougé
+    // IzunaPunch = R3 vers le bas 
+    else if ((get_val (PS4_RY) >= 70) && ! combo_running(IzunaPunch)) {
+    	cancel = 2;						// = 2 car c'est R3 qui a bougé
+    	combo_run (IzunaPunch);
+    }
+   // else cancel = 0;					// Aucun des joysticks n'a bougé
  
  	// Stopper un combo en cours d'execution
  	// -------------------------------------
  	//
  	// 	La version précédente du script faisait tourner combo_stop 
- 	//  tout le temps. (car L3 et R3 ne bougent presque jamais.
- 	//  Grace a la variable cancel on ne lance combo_stop uniquement
- 	//  s'ils ont bougé
+ 	//  tout le temps, car L3 et R3 ne bougent presque jamais.
+ 	//  Avec la variable cancel on ne lance combo_stop uniquement
+ 	//  si L3 ou R3 ont bougé
  	// -------------------------------------
  	
  	// Detecter si cancel est a 1 ou 2 
  	if (cancel == 1) {  // C'est L3 qui a bougé
+
 	    // Si L3 n'est plus vers la gauche (LX) ni en haut ni en bas (LY)            
 	    if ((abs(get_val (PS4_LX)) <= 20) && (abs(get_val (PS4_LY)) <= 20)) {
-	    	combo_stop(MidH);
+	    	 		set_val(TRACE_1,100);combo_stop(MidH);
             combo_stop(LowH);		// Arrêt des 2 combos      
             combo_stop(HighH);		// même s'ils ne sont pas lancés
 	    }  	
  	}
  	else if (cancel == 2) { // c'est R3 qui a bougé
-	    // Detecter si RX est revenu en position de départ 
-	    if (abs(get_val (PS4_RX)) <= 20) combo_stop(Izuna);  // arret du combo Izuna 
+	    // Detecter si RX ou RY est revenu en position de départ 
+	   if ((abs(get_val(PS4_RX)) < 20)&&(abs(get_val (PS4_RY)) <= 20)) {
+	   		combo_stop(Izuna);  // arret du combo Izuna
+	   		combo_stop(IzunaPunch);
+	   	}
  	}
  	
 
@@ -94,14 +122,13 @@ main {
 
 // liste des combos
 
-
 combo HighH  {
     set_val(Right,100);
     wait(40);
     wait(40);
     set_val(Left,100);
     set_val(PS4_UP,100);
-    set_val(PS4_SQUARE,100);
+    set_val(DOA_H,100);
     wait(40);
     wait(300);
     set_val(PS4_DOWN,100);
@@ -113,7 +140,7 @@ combo HighH  {
     set_val(PS4_UP,100);
     wait(40);
     wait(40);
-    set_val(PS4_SQUARE,100);
+    set_val(DOA_H,100);
     wait(40);
     wait(300);
     set_val(PS4_UP,100);
@@ -129,7 +156,7 @@ combo HighH  {
     wait(40);
     wait(40);
     set_val(PS4_UP,100);
-    set_val(PS4_SQUARE,100);
+    set_val(DOA_H,100);
     wait(40);
     wait(40);
 } // end combo
@@ -138,7 +165,7 @@ combo MidH  {
     wait(40);
     wait(40);
     set_val(Left,100);
-    set_val(PS4_SQUARE,100);
+    set_val(DOA_H,100);
     wait(40);
     wait(300);
     set_val(PS4_DOWN,100);
@@ -150,7 +177,7 @@ combo MidH  {
     set_val(PS4_UP,100);
     wait(40);
     wait(40);
-    set_val(PS4_SQUARE,100);
+    set_val(DOA_H,100);
     wait(40);
     wait(500);
     set_val(PS4_UP,100);
@@ -166,47 +193,85 @@ combo MidH  {
     wait(40);
     wait(40);
     set_val(PS4_UP,100);
-    set_val(PS4_SQUARE,100);
+    set_val(DOA_H,100);
     wait(40);
     wait(40);
 } // end combo
 combo LowH  {
-    set_val(Right,100);
-    wait(40);
-    wait(40);
-    set_val(Left,100);
-    set_val(PS4_DOWN,100);
-    set_val(PS4_SQUARE,100);
-    wait(40);
-    wait(300);
-    set_val(PS4_DOWN,100);
-    wait(40);
-    wait(40);
-    set_val(Left,100);
-    wait(40);
-    wait(40);
-    set_val(PS4_UP,100);
-    wait(40);
-    wait(40);
-    set_val(PS4_SQUARE,100);
-    wait(40);
-    wait(800);
-    set_val(PS4_UP,100);
-    wait(40);
-    wait(40);
-    set_val(Left,100);
-    wait(40);
-    wait(40);
-    set_val(PS4_DOWN,100);
-    wait(40);
-    wait(40);
-    set_val(Right,100);
-    wait(40);
-    wait(40);
-    set_val(PS4_UP,100);
-    set_val(PS4_SQUARE,100);
-    wait(40);
-    wait(40);
+	set_val(PS4_RIGHT, 100);
+	wait(90);
+	set_val(PS4_DOWN, 100);
+	set_val(PS4_RIGHT, 100);
+	wait(20);
+	set_val(PS4_DOWN, 0);
+	set_val(PS4_RIGHT, 100);
+	wait(10);
+	set_val(PS4_DOWN, 100);
+	set_val(PS4_RIGHT, 0);
+	wait(20);
+	set_val(PS4_DOWN, 100);
+	set_val(PS4_LEFT, 100);
+	wait(50);
+	set_val(PS4_DOWN, 100);
+	set_val(PS4_LEFT, 100);
+	set_val(DOA_H, 100);
+	wait(190);
+	set_val(PS4_DOWN, 0);
+	set_val(PS4_LEFT, 0);
+	set_val(DOA_H, 100);
+	wait(40);
+	set_val(DOA_H, 0);
+	wait(210);
+	set_val(PS4_DOWN, 100);
+	wait(90);
+	set_val(PS4_DOWN, 100);
+	set_val(PS4_LEFT, 100);
+	wait(60);
+	set_val(PS4_DOWN, 0);
+	set_val(PS4_LEFT, 100);
+	wait(30);
+	set_val(PS4_UP, 100);
+	set_val(PS4_LEFT, 100);
+	wait(20);
+	set_val(PS4_UP, 100);
+	set_val(PS4_LEFT, 0);
+	wait(40);
+	set_val(PS4_UP, 100);
+	set_val(DOA_H, 100);
+	wait(190);
+	set_val(PS4_UP, 100);
+	set_val(DOA_H, 0);
+	wait(260);
+	set_val(PS4_UP, 0);
+	set_val(PS4_RIGHT, 100);
+	wait(110);
+	set_val(PS4_DOWN, 100);
+	set_val(PS4_RIGHT, 0);
+	wait(120);
+	set_val(PS4_DOWN, 100);
+	set_val(PS4_LEFT, 100);
+	wait(10);
+	set_val(PS4_DOWN, 0);
+	set_val(PS4_LEFT, 100);
+	wait(30);
+	set_val(PS4_UP, 100);
+	set_val(PS4_LEFT, 0);
+	wait(40);
+	set_val(PS4_UP, 0);
+	set_val(PS4_RIGHT, 100);
+	wait(100);
+	set_val(PS4_DOWN, 100);
+	set_val(PS4_RIGHT, 100);
+	wait(30);
+	set_val(PS4_DOWN, 100);
+	set_val(PS4_RIGHT, 0);
+	wait(40);
+	set_val(PS4_DOWN, 100);
+	set_val(DOA_H, 100);
+	wait(90);
+	set_val(PS4_DOWN, 0);
+	set_val(DOA_H, 100);
+	wait(60);
 } // end combo
 combo Izuna  {
     set_val(Left,100);
@@ -216,7 +281,7 @@ combo Izuna  {
     wait(40);
     wait(40);
     set_val(Right,100);
-    set_val(PS4_CROSS,100);
+    set_val(DOA_T,100);
     wait(40);
     wait(500);
     set_val(PS4_DOWN,100);
@@ -226,7 +291,7 @@ combo Izuna  {
     wait(40);
     wait(40);
     set_val(PS4_UP,100);
-    set_val(PS4_CROSS,100);
+    set_val(DOA_T,100);
     wait(40);
     wait(500);
     set_val(PS4_UP,100);
@@ -242,119 +307,48 @@ combo Izuna  {
     wait(40);
     wait(40);
     set_val(PS4_UP,100);
-    set_val(PS4_CROSS,100);
+    set_val(DOA_T,100);
     wait(40);
     wait(40);
 } // end combo
-combo SlowEscape  {
-    set_val(PS4_SQUARE,100);
+combo IzunaPunch  {
+    set_val(XB1_LB,100);
+    wait(110);
+    wait(90);
+    set_val(XB1_Y,100);
+    wait(70);
+    wait(80);
+    set_val(XB1_Y,100);
+    wait(70);
+    wait(50);
+    set_val(XB1_RIGHT,100);
+    wait(70);
+    wait(60);
+    set_val(XB1_UP,100);
+    wait(50);
     wait(20);
-    set_val(PS4_SQUARE,100);
-    set_val(Left,100);
+    set_val(XB1_LEFT,100);
     wait(10);
-    set_val(PS4_SQUARE,100);
-    set_val(Left,100);
-    set_val(PS4_DOWN,100);
-    wait(10);
-    set_val(PS4_SQUARE,100);
-    set_val(PS4_DOWN,100);
-    wait(10);
-    set_val(PS4_SQUARE,100);
-    set_val(PS4_DOWN,100);
-    set_val(Right,100);
-    wait(10);
-    set_val(PS4_SQUARE,100);
-    set_val(Right,100);
-    wait(10);
-    set_val(PS4_SQUARE,100);
-    set_val(Right,100);
-    set_val(PS4_UP,100);
-    wait(10);
-    set_val(PS4_SQUARE,100);
-    set_val(PS4_UP,100);
-    wait(10);
-    set_val(PS4_SQUARE,100);
-    set_val(PS4_UP,100);
-    set_val(Left,100);
-    wait(10);
-    set_val(PS4_SQUARE,100);
-    set_val(Left,100);
-    wait(10);
-    set_val(PS4_SQUARE,100);
-    set_val(Left,100);
-    wait(10);
-    set_val(PS4_SQUARE,100);
-    set_val(Left,100);
-    set_val(PS4_DOWN,100);
-    wait(10);
-    set_val(PS4_SQUARE,100);
-    set_val(PS4_DOWN,100);
-    wait(10);
-    set_val(PS4_SQUARE,100);
-    set_val(PS4_DOWN,100);
-    set_val(Right,100);
-    wait(10);
-    set_val(PS4_SQUARE,100);
-    set_val(Right,100);
-    wait(10);
-    set_val(PS4_SQUARE,100);
-    set_val(Right,100);
-    set_val(PS4_UP,100);
-    wait(10);
-    set_val(PS4_SQUARE,100);
-    set_val(PS4_UP,100);
-    wait(10);
-    set_val(PS4_SQUARE,100);
-    set_val(PS4_UP,100);
-    set_val(Left,100);
-    wait(10);
-    set_val(PS4_SQUARE,100);
-    set_val(Left,100);
-    wait(10);
-    set_val(PS4_SQUARE,100);
-    set_val(Left,100);
-    wait(10);
-    set_val(PS4_SQUARE,100);
-    set_val(Left,100);
-    set_val(PS4_DOWN,100);
-    wait(10);
-    set_val(PS4_SQUARE,100);
-    set_val(PS4_DOWN,100);
-    wait(10);
-    set_val(PS4_SQUARE,100);
-    set_val(PS4_DOWN,100);
-    set_val(Right,100);
-    wait(10);
-    set_val(PS4_SQUARE,100);
-    set_val(Right,100);
-    wait(10);
-    set_val(PS4_SQUARE,100);
-    set_val(Right,100);
-    set_val(PS4_UP,100);
-    wait(10);
-    set_val(PS4_SQUARE,100);
-    set_val(PS4_UP,100);
-    wait(10);
-    set_val(PS4_SQUARE,100);
-    set_val(PS4_UP,100);
-    set_val(Left,100);
-    wait(10);
-    set_val(PS4_SQUARE,100);
-    set_val(Left,100);
-    wait(10);
-} // end combo
-combo KoreanBackdash  {
-    set_val(Left,100);
+    wait(70);
+    set_val(XB1_DOWN,100);
     wait(60);
+    wait(50);
+    set_val(XB1_RIGHT,100);
     wait(60);
-    set_val(Left,100);
-    wait(60);
-    wait(60);
-    set_val(PS4_DOWN,100);
-    set_val(Left,100);
-    wait(60);
-    wait(60);
-    set_val(Left,100);
-    wait(60);
-    wait(60);
+    wait(50);
+    set_val(XB1_UP,100);
+    wait(20);
+    set_val(XB1_LEFT,100);
+    wait(20);
+    set_val(XB1_DOWN,100);
+    set_val(XB1_LEFT,100);
+    wait(10);
+    set_val(XB1_DOWN,100);
+    wait(50);
+    wait(50);
+    set_val(XB1_RIGHT,100);
+    set_val(XB1_A,100);
+    wait(30);
+    set_val(XB1_A,100);
+    wait(40);
 } // end combo
