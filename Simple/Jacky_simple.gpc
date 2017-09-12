@@ -112,7 +112,7 @@ combo Kick {
 
 combo Kick3{
 	set_val(PS4_RIGHT, 100);
-	wait(115);
+	wait(220);
 	set_val(PS4_RIGHT, 100);
 	set_val(PS4_CIRCLE, 100);
 	wait(125);
@@ -123,7 +123,7 @@ combo Kick3{
 	set_val(PS4_RIGHT, 100);
 	set_val(PS4_CIRCLE, 100);
 	set_val(PS4_SQUARE, 100);
-	wait(140);
+	wait(50);
 
 }
 
