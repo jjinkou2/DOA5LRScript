@@ -26,7 +26,7 @@ define DOA_HK = PS4_R1
 	// ---------
 int Right = PS4_RIGHT;  // cette variable contiendra la touche droite  
 int Left  = PS4_LEFT;   // idem pour gauche
-
+int Kickstarted = FALSE;
 
 
 // BOUCLE PRINCIPALE
@@ -51,50 +51,117 @@ main {
              
     // lancement des combos
     //----------------------
-
+   if (get_val (PS4_RY) >= 70)		combo_run(Kick3);
     // si la touche L3 est appuyée lancer le combo Kick
-    if (get_val (PS4_RY) <= -70) combo_run(Kick);                                                     
+    if (get_val (PS4_RY) <= -70){
+    	if ((Kickstarted==FALSE)) {
+    			set_val(TRACE_3,100);
+    	    Kickstarted=TRUE;
+    		combo_run(Kick);
+    	}
+    	else {
+			if (!combo_running(Kick)) {
+    			combo_run(KickFollow);
+			}
+    	}
+    }
+   if ((abs(get_val (PS4_RY)) <= 20)) {	
+   		Kickstarted=FALSE;
+   		combo_stop(Kick);
+   		combo_stop(KickFollow);
+   	}
                                                    
 }
       
       
 // COMBO BLOCK
 // ----------------------------------------------------
+combo KickFollow {
+	set_val(TRACE_2,100);
+	set_val(Right, 100);
+	set_val(PS4_CIRCLE, 100);
+	wait(50);
+	set_val(Right, 100);
+	set_val(PS4_CIRCLE,0);
+	wait(217);
+	set_val(Right, 100);
+	set_val(PS4_SQUARE, 100);
+			set_val(TRACE_2,0);
+	wait(30);
 
-combo Kick2 {
+}
+combo Kick {
+
+	set_val(TRACE_1,100);
 	set_val(Right, 100);
-	wait(120);
-	set_val(Right, 100);
-	set_val(PS4_CIRCLE, 100);
-	wait(288);
-	set_val(Right, 100);
-	set_val(PS4_SQUARE, 100);
-	wait(120);
+	wait(50);
 	set_val(Right, 100);
 	set_val(PS4_CIRCLE, 100);
-	wait(288);
+	wait(50);
+	set_val(Right, 100);
+	set_val(PS4_CIRCLE,0);
+	wait(217);
+	set_val(Right, 100);
 	set_val(PS4_SQUARE, 100);
-	wait(54);
+		set_val(TRACE_1,0);
+	wait(30);
+	
+
+
 }
 
-
-combo Kick {// https://virtuafighter.com/threads/iaigeri-flash-sword-kick-execution-thread.19980/
+combo Kick3{
 	set_val(PS4_RIGHT, 100);
-	wait(120);
+	wait(115);
+	set_val(PS4_RIGHT, 100);
+	set_val(PS4_CIRCLE, 100);
+	wait(125);
+
+	set_val(PS4_RIGHT, 100);
+	set_val(PS4_CIRCLE, 100);
+	wait(130);
+	set_val(PS4_RIGHT, 100);
+	set_val(PS4_CIRCLE, 100);
+	set_val(PS4_SQUARE, 100);
+	wait(140);
+
+}
+
+combo Kick2 {// https://virtuafighter.com/threads/iaigeri-flash-sword-kick-execution-thread.19980/
+	set_val(PS4_RIGHT, 100);
+	wait(180);
 	set_val(PS4_RIGHT, 100);
 	set_val(PS4_CIRCLE, 100);
 	wait(80);
 	set_val(PS4_RIGHT, 100);
 	set_val(PS4_CIRCLE, 0);
-	wait(90);
+	wait(30);
 	set_val(PS4_RIGHT, 100);
 	set_val(PS4_CIRCLE, 100);
-	wait(90);
+	wait(130);
 	set_val(PS4_RIGHT, 100);
 	set_val(PS4_CIRCLE, 100);
 	set_val(PS4_SQUARE, 100);
-	wait(110);
-
+	wait(140);
+	set_val(PS4_RIGHT, 100);
+	set_val(PS4_CIRCLE, 0);
+	set_val(PS4_SQUARE, 100);
+	wait(10);
+	set_val(PS4_RIGHT, 100);
+	set_val(PS4_SQUARE, 0);
+	wait(300);
+	set_val(PS4_RIGHT, 100);
+	set_val(PS4_CIRCLE, 100);
+	wait(230);
+	set_val(PS4_RIGHT, 100);
+	set_val(PS4_CIRCLE, 100);
+	set_val(PS4_SQUARE, 100);
+	wait(120);
+	set_val(PS4_RIGHT, 100);
+	set_val(PS4_CIRCLE, 0);
+	set_val(PS4_SQUARE, 0);
+	wait(120);
+	set_val(PS4_RIGHT, 0);
 
 }
 
