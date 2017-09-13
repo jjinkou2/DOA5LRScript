@@ -83,13 +83,7 @@ main {
  
  	// Stopper un combo en cours d'execution
  	// -------------------------------------
- 	//
- 	// 	La version précédente du script faisait tourner combo_stop 
- 	//  tout le temps, car L3 et R3 ne bougent presque jamais.
- 	//  Avec la variable cancel on ne lance combo_stop uniquement
- 	//  si L3 ou R3 ont bougé
- 	// -------------------------------------
- 	
+
  	// Detecter si cancel est a 1 ou 2 
  	if (cancel == 1) {  // C'est L3 qui a bougé
 
