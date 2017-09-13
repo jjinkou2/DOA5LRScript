@@ -1,81 +1,205 @@
-int Right;
-int Left;
+ 	
+// PHASE initialisation du script
+// ------------------------------
+	// Constantes: Les constantes ne peuvent pas etre modifiées
+	//-----------
+    // Config Sandy
+    
+define DOA_H  = PS4_CROSS
+define DOA_T  = PS4_R1
+define DOA_P  = PS4_TRIANGLE
+define DOA_K  = PS4_CIRCLE
+define DOA_PK = PS4_SQUARE
+define DOA_HK = PS4_L2
+
+    // Config Laurent
+/*    
+define DOA_H  = PS4_SQUARE
+define DOA_T  = PS4_CROSS
+define DOA_P  = PS4_TRIANGLE
+define DOA_K  = PS4_CIRCLE
+define DOA_PK = PS4_L1
+define DOA_HK = PS4_R1
+*/
 
 
-// MAIN BLOCK
-//-----------------------------------------------------
- main {  
- 
- 	// pour inverser les combos selon que le perso est a droite ou a gauche
-   // Si on est a gauche appuyer sur DPAD Droite
- 	 if(get_val(PS4_RIGHT)){Right=PS4_RIGHT;Left=PS4_LEFT;}
-   // sinon appuyer sur DPAD Gauche 
- 	 if(get_val(PS4_LEFT)){Right=PS4_LEFT;Left=PS4_RIGHT;}
-             
+	// variables
+	// ---------
+int Right  = PS4_RIGHT;  // cette variable contiendra la touche droite  
+int Left   = PS4_LEFT;   // idem pour gauche
+int cancel = 0;			 // variable pour indiquer si un combo doit être annulé
+						 // 0 = aucun combo à annuler
+						 // 1 = annuler les combos associés à la touche L3
+						 // 2 = idem pour R3
+						 
+
+// BOUCLE PRINCIPALE
+// -----------------
+main { 
+
+   // pour inverser les combos selon que le perso est a droite ou a gauche
+   // Si le perso est a gauche appuyer sur DPAD Droite avant de faire un combo 
+
+	if(get_val(PS4_RIGHT)) {
+ 	 	Right=16;   // 16 = PS4_RIGHT cf . http://cronusmax.com/manual/identifiers.htm
+ 	 	Left=15;    // 15 = PS4_LEFT
+ 	 }
+   
+   // sinon appuyer sur DPAD Gauche  avant de lancer les combos
+   // Le perso est a droite de l'écran il faut inverser les combos !
+ 	
+ 	if(get_val(PS4_LEFT)) {
+ 	 	Right=15;  // Right prend la valeur PS4_LEFT dans les combos 
+ 	 	Left=16;   // Left devient PS4_RIGHT  (ligne 57)
+ 	 }             
              
     // lancement des combos
-    //----------------------
+    //----------------------                                          
+                                                       
+    // DP_Palm = R3 vers la gauche                 
+   	else if  ((get_val (PS4_RX) <= -70) && ! combo_running(DP_Palm)) { // else = sinon
+   		cancel = 2;						// on positionne la variable 
+   										// d'annulation à 2 car R3 a bougé
+   		combo_run(DP_Palm);				// lancement du combo
+   	}
+ 	// Toryu = R3 vers la droite 
+    else if ((get_val (PS4_RX) >= 70) && ! combo_running(Toryu)) {
+    	cancel = 2;						// = 2 car c'est R3 qui a bougé
+    	combo_run (Toryu);
+    }   
+   	// Hantei = R3 vers le bas                   
+   	else if ((get_val (PS4_RY) >= 70) && ! combo_running(Hantei)) {
+   		cancel = 2;
+   		combo_run (Hantei);
+   	}
+ 
 
-    // si la touche L3 est appuyée lancer le combo Kick
-    if(get_val (PS4_R3))combo_run(Kick);                                                     
-                                                   
-    // Toryu avec  L3 vers la gauche                 
-   	if (get_val (PS4_L3) ) combo_run(Toryu);     
-}
-      
+    // Kick = R3 vers le haut 
+    else if ((get_val (PS4_RY) <= -70) && ! combo_running(Kick)) {
+    	cancel = 2;						// = 2 car c'est R3 qui a bougé
+    	combo_run (Kick);
+    }
+
+ 
+ 	// Stopper un combo en cours d'execution
+ 	// -------------------------------------
+ 	//
+ 	// 	La version précédente du script faisait tourner combo_stop 
+ 	//  tout le temps, car L3 et R3 ne bougent presque jamais.
+ 	//  Avec la variable cancel on ne lance combo_stop uniquement
+ 	//  si L3 ou R3 ont bougé
+ 	// -------------------------------------
+ 	
+ 	// Detecter si cancel est a 1 ou 2 
+ 	if (cancel == 1) {  // C'est L3 qui a bougé
+
+	    // Si L3 n'est plus vers la gauche (LX) ni en haut ni en bas (LY)            
+	    if ((abs(get_val (PS4_LX)) <= 20) && (abs(get_val (PS4_LY)) <= 20)) {
+		
+		//	Inserer les combos a stopper. Par ex:   
+		//  combo_stop(MidH); // pour stopper le combo MidH qui est lancé par L3
+    
+	    }  	
+ 	}
+ 	
+ 	else if (cancel == 2) { // c'est R3 qui a bougé
+	    // Detecter si RX ou RY est revenu en position de départ 
+	   if ((abs(get_val(PS4_RX)) < 20)&&(abs(get_val (PS4_RY)) <= 20)) {
+	   		combo_stop(Kick);  // arret du combo Kick
+	   		combo_stop(DP_Palm);
+	   		combo_stop(Hantei);
+	   		combo_stop(Toryu);	   		
+	   	}
+ 	}
+ 	set_val(PS4_LX,0);
+ 	set_val(PS4_LY,0);
+ 	
+
+   
+}// main block end      
       
 // COMBO BLOCK
 // ----------------------------------------------------
 
 
 combo Kick {
-	set_val(PS4_SQUARE, 100);
+	set_val(DOA_H, 100);
 	set_val(PS4_CIRCLE, 100);
-	wait(18);
-	set_val(PS4_SQUARE, 0);
+	wait(19);
+	set_val(DOA_H, 0);
 	set_val(PS4_CIRCLE, 100);
-	wait(140);
-	set_val(PS4_CIRCLE, 0);
+	wait(145);
+}
+combo DP_Palm{ //[3].46P
+
+	set_val(PS4_DOWN, 100);
+	set_val(Right, 100);
+	wait(40);
+	set_val(Left, 100);
+	wait(40);
+	set_val(Right, 100);
+	set_val(PS4_TRIANGLE, 100);
+	wait(40);
 }
 
-combo Toryu{
-	set_val(PS4_DOWN, 100);
-	wait(90);
-	set_val(PS4_DOWN, 0);
-	set_val(PS4_RIGHT, 100);
-	wait(40);
-	set_val(PS4_L1, 100);
-	set_val(PS4_RIGHT, 100);
-	wait(90);
-	set_val(PS4_L1, 100);
-	set_val(PS4_RIGHT, 0);
-	wait(90);
-	set_val(PS4_L1, 0);
-	wait(90);
-
-	set_val(Left,100);
-    wait(150);
-    set_val(Left,0);
-    set_val(Right,100);
-    set_val(PS4_DOWN,100);
-    set_val(PS4_L1,100);    
-    wait(90);
-    wait(250);
-/*
-    set_val(PS4_DOWN,100);
-    wait(140);
-    wait(140);
-    set_val(Right,100);
-    set_val(PS4_TRIANGLE,100);
-    wait(140);
-    wait(250);
-
-	set_val(Left,100);
-    wait(140);
-    wait(140);
-    set_val(Right,100);
-    set_val(PS4_L1,100);
-    wait(140);
-    wait(140);
-*/
+combo Hantei { // 3P+K,P,466P+K
+	//3P+K
+   set_val(PS4_DOWN,100);
+   set_val(Right,100);
+   wait(40);
+   set_val(DOA_HK,100);
+   wait(40);
+   wait(80);
+   
+   //P
+   set_val(PS4_TRIANGLE,100);
+   wait(40);
+   
+   // 466P+K
+   	set_val(Left, 100);
+	wait(120);
+	wait(30);
+	set_val(Right, 100);
+	wait(110);
+	wait(60);
+	set_val(Right, 100);
+	wait(130);
+	set_val(DOA_PK, 100);
+	set_val(Right, 100);
+	wait(120);
+	set_val(DOA_PK, 0);
+	set_val(Right, 100);
+	wait(30);
+}
+	
+combo Toryu{ //236P+K,43P+K,214P,46P+K
+   set_val(PS4_DOWN,100);
+   wait(40);
+   wait(40)
+   set_val(Right,100);
+   set_val(DOA_PK,100);
+   wait(200);
+   wait(50)
+   set_val(Left,100);
+   wait(80);
+   set_val(Right,100);
+   set_val(PS4_DOWN,100);
+   set_val(DOA_PK,100);
+   wait(40);
+   wait(150)
+   set_val(PS4_DOWN,100);
+   wait(40);
+   set_val(Left,100);
+   set_val(PS4_DOWN,100);
+   wait(40);   
+   set_val(Left,100);
+   set_val(PS4_TRIANGLE,100);
+   wait(40);
+   wait(100)
+   set_val(Left,100);
+   wait(40);
+   set_val(Right,100);
+   set_val(DOA_PK,100);
+   wait(40);
+   
 }
