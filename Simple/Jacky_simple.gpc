@@ -161,14 +161,14 @@ combo CBSwag{
 	call(Kick);
 	wait(40);
 	
-	// Bounce 2H+K	
+	// Bounce 4H+K	
 	set_val(Left, 100);
 	wait(40);
 	set_val(Left, 100);
 	set_val(DOA_HK, 100);
 	wait(40);
 	wait(680);
-	// Bounce 2H+K
+	// Bounce 4H+K
 	set_val(Left, 100);
 	wait(40);
 	set_val(Left, 100);
