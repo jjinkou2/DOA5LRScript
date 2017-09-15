@@ -3,7 +3,7 @@
 Contenu des repertoires:
 ------------------------
 - Le repertoire simple contient les mini combos pour débuter
-- le repertoire avancé contients les scripts plus complexes
+- le repertoire avancé contient les scripts plus complexes
 
 Comment enregistrer un combo:
 -------------------------------
