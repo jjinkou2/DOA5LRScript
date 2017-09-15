@@ -26,7 +26,10 @@ define DOA_HK = PS4_R1
 	// ---------
 int Right = PS4_RIGHT;  // cette variable contiendra la touche droite  
 int Left  = PS4_LEFT;   // idem pour gauche
-
+int cancel = 0;			 // variable pour indiquer si un combo doit être annulé
+						 // 0 = aucun combo à annuler
+						 // 1 = annuler les combos associés à la touche L3
+						 // 2 = idem pour R3
 
 // BOUCLE PRINCIPALE
 // -----------------
@@ -48,11 +51,53 @@ main {
  	 	Left=16;   // Left devient PS4_RIGHT  (ligne 57)
  	 }             
              
-    // lancement des combos
+
+	// lancement des combos
     //----------------------
-    // R3 vers le bas
-   if (get_val (PS4_RY) >= 70)		combo_run(Kick);
-    // si la touche L3 est appuyée lancer le combo Kick
+    
+   
+   	// Kick =  R3 vers le Haut                   
+   	if ((get_val (PS4_RY) <= -70) && ! combo_running(Kick)) {
+   		cancel = 2;
+   		combo_run (Kick);
+   	}
+ 
+ 	// CBSwag = R3 vers la droite 
+    else if ((get_val (PS4_RX) >= 70) && ! combo_running(CBSwag)) {
+    	cancel = 2;						// = 2 car c'est R3 qui a bougé
+    	combo_run (CBSwag);
+    }
+    // CBSetup = R3 vers le bas 
+    else if ((get_val (PS4_RY) >= 70) && ! combo_running(CBSetup)) {
+    	cancel = 2;						// = 2 car c'est R3 qui a bougé
+    	combo_run (CBSetup);
+    }
+ 
+ 
+ 	// Stopper un combo en cours d'execution
+ 	// -------------------------------------	
+ 	// Detecter si cancel est a 1 ou 2 
+ 	if (cancel == 1) {  // C'est L3 qui a bougé
+
+	    // Si L3 n'est plus vers la gauche (LX) ni en haut ni en bas (LY)            
+	    if ((abs(get_val (PS4_LX)) <= 20) && (abs(get_val (PS4_LY)) <= 20)) {
+	    /*	
+	    	combo_stop(MidH);
+            combo_stop(LowH);		// Arrêt des 2 combos      
+            combo_stop(HighH);		// même s'ils ne sont pas lancés
+          */
+	    }  	
+ 	}
+ 	else if (cancel == 2) { // c'est R3 qui a bougé
+	    // Detecter si RX ou RY est revenu en position de départ 
+	   if ((abs(get_val(PS4_RX)) < 20)&&(abs(get_val (PS4_RY)) <= 20)) {
+	   		combo_stop(Kick);  // arret du combo Kick
+	   		combo_stop(CBSetup);
+	   		combo_stop(CBSwag);	   		
+	   	}
+ 	}
+ 	set_val(PS4_LX,0);
+ 	set_val(PS4_LY,0);    
                                                    
 }
       
@@ -63,13 +108,84 @@ main {
 // timing trouvé sur 
 // https://virtuafighter.com/threads/iaigeri-flash-sword-kick-execution-thread.19980/
 combo Kick{
-	set_val(PS4_RIGHT, 100);
+	set_val(Right, 100);
 	wait(140);
-	set_val(PS4_RIGHT, 100);
+	set_val(Right, 100);
 	set_val(PS4_CIRCLE, 100);
 	wait(266);
 
 	set_val(DOA_H, 100);
 	wait(140);
+
+}
+
+combo CBSetup{  // Combo pour arriver au CB
+	set_val(Right, 100);
+	set_val(DOA_PK, 100);
+	wait(40);
+	wait(520);
+	set_val(PS4_TRIANGLE, 100);
+	wait(40);
+	wait(400);
+	set_val(DOA_HK, 100);
+	wait(40);
+	wait(400);
+	set_val(Left, 100);
+	wait(40);
+	wait(400);
+
+	// CB  
+	set_val(PS4_CIRCLE, 100);
+	wait(40);
+	wait(800);
+	
+	call(CBSwag);   // Appelle le combo apres le CB
+}
+
+combo CBSwag{
+	// Tourne derriere
+	set_val(PS4_DOWN, 100);
+	wait(500);
+	// Bounce 2H+K
+	set_val(Left, 100);
+	set_val(DOA_HK, 100);
+	wait(40);
+	wait(580);
+	// FSK 1
+	call(Kick);
+	set_val(Right, 100);
+	// FSK 2
+	call(Kick);
+	set_val(Right, 100);
+	// FSK 3
+	call(Kick);
+	wait(40);
+	
+	// Bounce 2H+K	
+	set_val(Left, 100);
+	wait(40);
+	set_val(Left, 100);
+	set_val(DOA_HK, 100);
+	wait(40);
+	wait(680);
+	// Bounce 2H+K
+	set_val(Left, 100);
+	wait(40);
+	set_val(Left, 100);
+	set_val(DOA_HK, 100);
+	wait(40);
+	wait(670);
+	
+	// 3P+K,P,P degat=117
+	set_val(DOA_PK, 100);
+	set_val(PS4_DOWN, 100);
+	set_val(Left, 100);
+	wait(100);
+	wait(130);
+	set_val(PS4_TRIANGLE, 100);
+	wait(130);
+	wait(140);
+	set_val(PS4_TRIANGLE, 100);
+	wait(100);
 
 }
