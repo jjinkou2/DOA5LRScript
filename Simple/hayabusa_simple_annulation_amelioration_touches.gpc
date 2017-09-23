@@ -39,6 +39,8 @@ int cancel = 0;			 // variable pour indiquer si un combo doit être annulé
 						 // 0 = aucun combo à annuler
 						 // 1 = annuler les combos associés à la touche L3
 						 // 2 = idem pour R3
+						 // 3 = idem sur pression R3
+						 // 4 = sur pression L3
 						 
 
 // BOUCLE PRINCIPALE
@@ -86,10 +88,7 @@ main {
                                                        
     // MidH = R3 vers la gauche   
     // ------------------------
-    // Note: La différence aavec "appuyer R3" : En utilisant R3 vers la gauche 
-    // si tu lache le joystick, tu pourras annuler ton combo si tu 
-    // l'as lancé au mauvais moment. 
-    
+   
     // Ancienne ligne c'était sur L3:
     //		if  ((get_val (PS4_LX) <= -70) && ! combo_running(MidH)) {
     
@@ -99,14 +98,6 @@ main {
    										// d'annulation à 1 car R3 a bougé
    		combo_run(MidH);				// lancement du combo
    	}
-
-
-    // MidH = appuie sur R3   
-    // ------------------------
-	// Note = annulation du combo pas possible
-	// Une fois lancé il s'execute jusqu'au bout
-   	if  (get_val (PS4_R3)) combo_run(MidH);				// lancement du combo
-   	
 
 
    	// LowH = R3 vers le bas 
@@ -132,7 +123,18 @@ main {
    		cancel = 1;
    		combo_run (HighH);
    	}
- 
+
+
+
+    // MidH = appuie sur R3   
+    // ------------------------
+   	if  ((get_val(PS4_R3)) && ! combo_running(MidH)) {
+   		cancel = 3;  	// cancel sur 3 car pression sur R3
+   		combo_run(MidH);	// lancement du combo si la variable = FAUX
+   	}
+
+
+
  	// Izuna = L3 vers le haut
  	// (modif idem cidessus mais RX->LX) 
     else if ((get_val (PS4_LY) <= -70) && ! combo_running(Izuna)) {
@@ -148,8 +150,11 @@ main {
 
 
     // IzunaPunch = appuie sur L3 
-    // Note : combo pas annulable
-    else if (get_val (PS4_L3))   combo_run (IzunaPunch);
+    else if ((get_val (PS4_L3)) && ! combo_running(IzunaPunch)){
+		cancel = 4;
+		combo_run(IzunaPunch);	
+   	}
+
     
 
   // ------------------------------------------------
@@ -177,9 +182,10 @@ main {
 	    	combo_stop(MidH);
             combo_stop(LowH);		// Arrêt des 2 combos      
             combo_stop(HighH);		// même s'ils ne sont pas lancés
+            cancel=0;				// on re initialise cancel pour le prochain
 	    }  	
  	}
- 	else if (cancel == 2) { // c'est L3 qui a bougé
+  	else if (cancel == 2) { // c'est L3 qui a bougé
 	    // Detecter si LX ou LY est revenu en position de départ
 	    // ancienne ligne:
 		//	   if ((abs(get_val(PS4_RX)) < 20)&&(abs(get_val (PS4_RY)) <= 20)) {
@@ -188,9 +194,21 @@ main {
 		if ((abs(get_val(PS4_LX)) < 20)&&(abs(get_val (PS4_LY)) <= 20)) {
 	   		combo_stop(Izuna);  // arret du combo Izuna
 	   		combo_stop(IzunaPunch);
+            cancel=0;				// on re initialise cancel pour le prochain
 	   	}
  	}
-
+   	else if (cancel == 3){	// pression sur R3
+   		if (abs(get_val(PS4_R3)<20)){	// si le bouton est relaché
+   			combo_stop(MidH);
+   			cancel=0;
+   		}
+   	}
+   	else if (cancel == 4){	// pression sur L3
+   		if (abs(get_val(PS4_L3)<20)){	// si le bouton est relaché
+   			combo_stop(IzunaPunch);
+   			cancel=0;
+   		}
+	}
 
   // ------------------------------------------------
   //
