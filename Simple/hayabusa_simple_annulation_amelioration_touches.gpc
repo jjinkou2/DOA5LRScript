@@ -105,7 +105,7 @@ main {
     // ------------------------
 	// Note = annulation du combo pas possible
 	// Une fois lancé il s'execute jusqu'au bout
-   	if  (get_val (PS4_R3) combo_run(MidH);				// lancement du combo
+   	if  (get_val (PS4_R3)) combo_run(MidH);				// lancement du combo
    	
 
 
@@ -149,7 +149,7 @@ main {
 
     // IzunaPunch = appuie sur L3 
     // Note : combo pas annulable
-    else if (get_val (PS4_L3)   combo_run (IzunaPunch);
+    else if (get_val (PS4_L3))   combo_run (IzunaPunch);
     
 
   // ------------------------------------------------
