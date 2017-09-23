@@ -46,7 +46,7 @@ int cancel = 0;			 // variable pour indiquer si un combo doit être annulé
 main { 
 
 /*
-	Cette boucle comprend 3 parties: 
+	Cette boucle comprend 4 parties: 
 	1) le changement des combos si on est a droite ou a gauche
 	2) l'affectation des touches pour chaque combos
 	3) l'annulation des combos si on relache la touche
@@ -86,8 +86,7 @@ main {
                                                        
     // MidH = R3 vers la gauche   
     // ------------------------
-    // Note: Je n'ai pas mis sur "appuyer R3" car sinon tu ne peux pas 
-    // annuler ton combo en cours. En utilisant R3 vers la gauche 
+    // Note: La différence aavec "appuyer R3" : En utilisant R3 vers la gauche 
     // si tu lache le joystick, tu pourras annuler ton combo si tu 
     // l'as lancé au mauvais moment. 
     
@@ -100,7 +99,16 @@ main {
    										// d'annulation à 1 car R3 a bougé
    		combo_run(MidH);				// lancement du combo
    	}
-   
+
+
+    // MidH = appuie sur R3   
+    // ------------------------
+	// Note = annulation du combo pas possible
+	// Une fois lancé il s'execute jusqu'au bout
+   	if  (get_val (PS4_R3) combo_run(MidH);				// lancement du combo
+   	
+
+
    	// LowH = R3 vers le bas 
    	// ---------------------
    	// Note j'ai laissé le contre expert bas mais tu peux changer pour un autre 
@@ -125,18 +133,24 @@ main {
    		combo_run (HighH);
    	}
  
- 	// Izuna = L3 vers la droite
+ 	// Izuna = L3 vers le haut
  	// (modif idem cidessus mais RX->LX) 
-    else if ((get_val (PS4_LX) >= 70) && ! combo_running(Izuna)) {
-    	cancel = 2;						// = 2 car c'est R3 qui a bougé
+    else if ((get_val (PS4_LY) <= -70) && ! combo_running(Izuna)) {
+    	cancel = 2;						// = 2 car c'est L3 qui a bougé
     	combo_run (Izuna);
     }
-    // IzunaPunch = R3 vers le bas 
+    
+    // IzunaPunch = L3 vers le bas 
     else if ((get_val (PS4_LY) >= 70) && ! combo_running(IzunaPunch)) {
     	cancel = 2;						// = 2 car c'est R3 qui a bougé
     	combo_run (IzunaPunch);
     }
 
+
+    // IzunaPunch = appuie sur L3 
+    // Note : combo pas annulable
+    else if (get_val (PS4_L3)   combo_run (IzunaPunch);
+    
 
   // ------------------------------------------------
   //
