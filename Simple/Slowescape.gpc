@@ -1,8 +1,30 @@
+// PHASE initialisation du script
+// ------------------------------
+	// Constantes: Les constantes ne peuvent pas etre modifiées
+	//-----------
+    // Config Sandy
+    
+define DOA_H  = PS4_CROSS
+define DOA_T  = PS4_R1
+define DOA_P  = PS4_TRIANGLE
+define DOA_K  = PS4_CIRCLE
+define DOA_PK = DOA_H
+define DOA_HK = PS4_L2
+
+    // Config Laurent
+/*    
+define DOA_H  = DOA_H
+define DOA_T  = PS4_CROSS
+define DOA_P  = PS4_TRIANGLE
+define DOA_K  = PS4_CIRCLE
+define DOA_PK = PS4_L1
+define DOA_HK = PS4_R1
+*/
 // MAIN BLOCK
 //-----------------------------------------------------
 main { 
-    // si la touche R3 est pressée lancer le combo maxcmb
-    if(event_press(PS4_R3))combo_run(maxcmb);                                                     
+    // si la touche L3 est pressée lancer le combo maxcmb
+    if(event_press(PS4_L3))combo_run(SLE);                                                     
                                                    
 }
       
@@ -12,130 +34,171 @@ main {
 
 
 combo SLE {
-   set_val(PS4_SQUARE, 100); // presse carré
-   wait(20)					 // pendant 20 ms
+   set_val(DOA_H, 100); // presse carré
+   wait(30)					 // pendant 30 ms
    
 // tourner le joystick 
 // tour = 1
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_LEFT,100);
-   wait(10);
+   wait(30);
 
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_LEFT,100);
    set_val(PS4_DOWN,100);
-   wait(10);
+   wait(30);
 
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_DOWN,100);
-   wait(10);
+   wait(30);
 
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_DOWN,100); 
    set_val(PS4_RIGHT,100);  
-   wait(10);
+   wait(30);
 
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_RIGHT,100);  
-   wait(10);
+   wait(30);
 
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_RIGHT,100);
    set_val(PS4_UP,100);
-   wait(10);
+   wait(30);
 
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_UP,100);
-   wait(10);
+   wait(30);
 
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_UP,100);
    set_val(PS4_LEFT,100);
-   wait(10);
+   wait(30);
 
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_LEFT,100);
-   wait(10);
+   wait(30);
 
 // tour 2
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_LEFT,100);
-   wait(10);
+   wait(30);
 
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_LEFT,100);
    set_val(PS4_DOWN,100);
-   wait(10);
+   wait(30);
 
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_DOWN,100);
-   wait(10);
+   wait(30);
 
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_DOWN,100); 
    set_val(PS4_RIGHT,100);  
-   wait(10);
+   wait(30);
 
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_RIGHT,100);  
-   wait(10);
+   wait(30);
 
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_RIGHT,100);
    set_val(PS4_UP,100);
-   wait(10);
+   wait(30);
 
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_UP,100);
-   wait(10);
+   wait(30);
 
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_UP,100);
    set_val(PS4_LEFT,100);
-   wait(10);
+   wait( ;
 
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_LEFT,100);
-   wait(10);
+   wait(30);
    
    // tour 3
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_LEFT,100);
-   wait(10);
+   wait(30);
 
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_LEFT,100);
    set_val(PS4_DOWN,100);
-   wait(10);
+   wait(30);
 
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_DOWN,100);
-   wait(10);
+   wait(30);
 
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_DOWN,100); 
    set_val(PS4_RIGHT,100);  
-   wait(10);
+   wait(30);
 
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_RIGHT,100);  
-   wait(10);
+   wait(30);
 
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_RIGHT,100);
    set_val(PS4_UP,100);
-   wait(10);
+   wait(30);
 
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_UP,100);
-   wait(10);
+   wait(30);
 
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_UP,100);
    set_val(PS4_LEFT,100);
-   wait(10);
+   wait(30);
 
-   set_val(PS4_SQUARE, 100);
+   set_val(DOA_H, 100);
    set_val(PS4_LEFT,100);
-   wait(10);
-}
+   wait(30);
+   
+   // tour 4
+   set_val(DOA_H, 100);
+   set_val(PS4_LEFT,100);
+   wait(30);
+
+   set_val(DOA_H, 100);
+   set_val(PS4_LEFT,100);
+   set_val(PS4_DOWN,100);
+   wait(30);
+
+   set_val(DOA_H, 100);
+   set_val(PS4_DOWN,100);
+   wait(30);
+
+   set_val(DOA_H, 100);
+   set_val(PS4_DOWN,100); 
+   set_val(PS4_RIGHT,100);  
+   wait(30);
+
+   set_val(DOA_H, 100);
+   set_val(PS4_RIGHT,100);  
+   wait(30);
+
+   set_val(DOA_H, 100);
+   set_val(PS4_RIGHT,100);
+   set_val(PS4_UP,100);
+   wait(30);
+
+   set_val(DOA_H, 100);
+   set_val(PS4_UP,100);
+   wait(30);
+
+   set_val(DOA_H, 100);
+   set_val(PS4_UP,100);
+   set_val(PS4_LEFT,100);
+   wait(30);
+
+   set_val(DOA_H, 100);
+   set_val(PS4_LEFT,100);
+   wait(30);
+   }
