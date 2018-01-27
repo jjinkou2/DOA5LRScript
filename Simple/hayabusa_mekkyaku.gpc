@@ -1,0 +1,479 @@
+	
+// PHASE initialisation du script
+// ------------------------------
+	// Constantes: Les constantes ne peuvent pas etre modifiées
+	//-----------
+    // Config Sandy
+define DOA_H  = PS4_CROSS
+define DOA_T  = PS4_R1
+define DOA_P  = PS4_TRIANGLE
+define DOA_K  = PS4_CIRCLE
+define DOA_PK = PS4_SQUARE
+define DOA_HK = PS4_L2
+
+/*
+    // Config Laurent
+    
+define DOA_H  = PS4_SQUARE
+define DOA_T  = PS4_CROSS
+define DOA_P  = PS4_TRIANGLE
+define DOA_K  = PS4_CIRCLE
+define DOA_PK = PS4_L1
+define DOA_HK = PS4_R1
+*/
+
+
+	// variables
+	// ---------
+int Right  = PS4_RIGHT;  // cette variable contiendra la touche droite  
+int Left   = PS4_LEFT;   // idem pour gauche
+int cancel = 0;			 // variable pour indiquer si un combo doit être annulé
+						 // 0 = aucun combo à annuler
+						 // 1 = annuler les combos associés à la touche L3
+						 // 2 = idem pour R3
+						 // 3 = idem sur pression R3
+						 // 4 = sur pression L3
+						 
+
+// BOUCLE PRINCIPALE
+// -----------------
+main { 
+
+/*
+	Cette boucle comprend 4 parties: 
+	1) le changement des combos si on est a droite ou a gauche
+	2) l'affectation des touches pour chaque combos
+	3) l'annulation des combos si on relache la touche
+	4) blocage des touches pour eviter des interferences
+*/
+
+  // ------------------------------------------------
+  //
+  // Partie 1: changement des combos droite gauche
+  //
+  // ------------------------------------------------
+  
+  	// pour inverser les combos selon que le perso est a droite ou a gauche
+   // Si le perso est a gauche appuyer sur DPAD Droite avant de faire un combo 
+
+	if(get_val(PS4_RIGHT)) {
+ 	 	Right=16;   // 16 = PS4_RIGHT cf . http://cronusmax.com/manual/identifiers.htm
+ 	 	Left=15;    // 15 = PS4_LEFT
+ 	 }
+   
+   // sinon appuyer sur DPAD Gauche  avant de lancer les combos
+   // Le perso est a droite de l'écran il faut inverser les combos !
+ 	
+ 	if(get_val(PS4_LEFT)) {
+ 	 	Right=15;  // Right prend la valeur PS4_LEFT dans les combos 
+ 	 	Left=16;   // Left devient PS4_RIGHT  (ligne 57)
+ 	 }             
+
+
+             
+  // ------------------------------------------------
+  //
+  // Partie 2: Affectation des touches pour le 
+  //  		   lancement des combos
+  //
+  // ------------------------------------------------
+                                                                                                
+   	// LowH = R3 vers le bas 
+   	// ---------------------
+   	else if ((get_val (PS4_RY) >= 70) && ! combo_running(LowH)) {
+   		cancel = 1;
+   		combo_run (LowH);
+   	}
+ 
+   	// HighH = R3 vers le Haut                   
+    // -----------------------
+   	else if ((get_val (PS4_RY) <= -70) && ! combo_running(HighH)) {
+   		cancel = 1;
+   		combo_run (HighH);
+   	}
+
+
+    // Yokko = appuie sur R3   
+    // ------------------------
+   	if  ((get_val(PS4_R3)) && ! combo_running(Yoko)) {
+   		cancel = 3;  	// cancel sur 3 car pression sur R3
+   		combo_run(Yoko);	// lancement du combo si la variable = FAUX
+   	}
+
+
+ 	// Izuna = L3 vers le haut
+    else if ((get_val (PS4_LY) <= -70) && ! combo_running(Izuna)) {
+    	cancel = 2;						// = 2 car c'est L3 qui a bougé
+    	combo_run (Izuna);
+    }
+    
+    // IzunaPunch = L3 vers le bas 
+    else if ((get_val (PS4_LY) >= 70) && ! combo_running(IzunaPunch)) {
+    	cancel = 2;						// = 2 car c'est R3 qui a bougé
+    	combo_run (IzunaPunch);
+    }
+
+ 	// Mekkyaku = L3 vers la Gauche (ou vers la gauche je sais pas)
+ 	
+    else if ((get_val (PS4_LX) <= -70) && ! combo_running(Mekkyaku)) {
+    	cancel = 2;						// = 2 car c'est L3 qui a bougé
+    	combo_run (Mekkyaku);
+    }
+
+ 	// Mekkyaku = L3 vers la Droite (ou vers la gauche je sais pas)
+ 	
+    else if ((get_val (PS4_LX) >= 70) && ! combo_running(Yoko)) {
+    	cancel = 2;						// = 2 car c'est L3 qui a bougé
+    	combo_run (Yoko);
+    }
+
+    
+
+  // ------------------------------------------------
+  //
+  // Partie 3: Annulation des combos
+  //
+  // ------------------------------------------------ 
+ 	
+ 	//  Note: 
+ 	// 	La version précédente du script faisait tourner combo_stop 
+ 	//  tout le temps, car L3 et R3 ne bougent presque jamais.
+ 	//  Avec la variable cancel on ne lance combo_stop uniquement
+ 	//  si L3 ou R3 ont bougé
+ 	// -------------------------------------
+ 	
+ 	// Detecter si cancel est a 1 ou 2 
+ 	if (cancel == 1) {  // C'est R3 qui a bougé
+
+	    // Si R3 n'est plus vers la gauche (RX) ni en haut ni en bas (RY)
+	    // ancienne ligne 
+	    // 		if ((abs(get_val (PS4_LX)) <= 20) && (abs(get_val (PS4_LY)) <= 20)) {
+	    
+	    // nouvelle Ligne
+	    if ((abs(get_val (PS4_RX)) <= 20) && (abs(get_val (PS4_RY)) <= 20)) {	    
+            combo_stop(LowH);		// Arrêt des 2 combos      
+            combo_stop(HighH);		// même s'ils ne sont pas lancés
+            cancel=0;				// on re initialise cancel pour le prochain
+	    }  	
+ 	}
+  	else if (cancel == 2) { // c'est L3 qui a bougé
+	    // Detecter si LX ou LY est revenu en position de départ
+	    // ancienne ligne:
+		//	   if ((abs(get_val(PS4_RX)) < 20)&&(abs(get_val (PS4_RY)) <= 20)) {
+
+	    // nouvelle Ligne
+		if ((abs(get_val(PS4_LX)) < 20)&&(abs(get_val (PS4_LY)) <= 20)) {
+	   		combo_stop(Izuna);  // arret du combo Izuna
+	   		combo_stop(IzunaPunch);
+	   		combo_stop(Mekkyaku);
+	   		combo_stop(Yoko);
+            cancel=0;				// on re initialise cancel pour le prochain
+	   	}
+ 	}
+   	else if (cancel == 3){	// pression sur R3
+   		if (abs(get_val(PS4_R3)<20)){	// si le bouton est relaché
+   			// combo_stop(MidH);
+   			cancel=0;
+   		}
+   	}
+   	else if (cancel == 4){	// pression sur L3
+   		if (abs(get_val(PS4_L3)<20)){	// si le bouton est relaché
+   			combo_stop(IzunaPunch);
+   			cancel=0;
+   		}
+	}
+
+  // ------------------------------------------------
+  //
+  // Partie 4: blocage des touches
+  //
+  // ------------------------------------------------ 
+	//  
+	// On indique a cronus max que le joystick gauche ne doit pas 
+	// gener le combos pendant son execution. (le joystick n'envoie plus 
+	// des touches avancer/reculer/haut/bas)
+	set_val(PS4_LX,0);
+ 	set_val(PS4_LY,0);
+ 	
+
+   
+}// main block end
+
+
+// liste des combos
+
+combo HighH  {
+    set_val(Right,100);
+    wait(40);
+    wait(40);
+    set_val(Left,100);
+    set_val(PS4_UP,100);
+    set_val(DOA_H,100);
+    wait(40);
+    wait(300);
+    set_val(PS4_DOWN,100);
+    wait(40);
+    wait(40);
+    set_val(Left,100);
+    wait(40);
+    wait(40);
+    set_val(PS4_UP,100);
+    wait(40);
+    wait(40);
+    set_val(DOA_H,100);
+    wait(40);
+    wait(300);
+    set_val(PS4_UP,100);
+    wait(40);
+    wait(40);
+    set_val(Left,100);
+    wait(40);
+    wait(40);
+    set_val(PS4_DOWN,100);
+    wait(40);
+    wait(40);
+    set_val(Right,100);
+    wait(40);
+    wait(40);
+    set_val(PS4_UP,100);
+    set_val(DOA_H,100);
+    wait(40);
+    wait(40);
+} // end combo
+/*
+combo MidH  {
+    set_val(Right,100);
+    wait(40);
+    wait(40);
+    set_val(Left,100);
+    set_val(DOA_H,100);
+    wait(40);
+    wait(300);
+    set_val(PS4_DOWN,100);
+    wait(40);
+    wait(40);
+    set_val(Left,100);
+    wait(40);
+    wait(40);
+    set_val(PS4_UP,100);
+    wait(40);
+    wait(40);
+    set_val(DOA_H,100);
+    wait(40);
+    wait(500);
+    set_val(PS4_UP,100);
+    wait(40);
+    wait(40);
+    set_val(Left,100);
+    wait(40);
+    wait(40);
+    set_val(PS4_DOWN,100);
+    wait(40);
+    wait(40);
+    set_val(Right,100);
+    wait(40);
+    wait(40);
+    set_val(PS4_UP,100);
+    set_val(DOA_H,100);
+    wait(40);
+    wait(40);
+} // end combo
+*/
+combo LowH  {
+    set_val(Right,100);
+    wait(40);
+    wait(40);
+    set_val(Left,100);
+    set_val(PS4_DOWN,100);
+    set_val(DOA_H,100);
+    wait(40);
+    wait(300);
+    set_val(PS4_DOWN,100);
+    wait(40);
+    wait(40);
+    set_val(Left,100);
+    wait(40);
+    wait(40);
+    set_val(PS4_UP,100);
+    wait(40);
+    wait(40);
+    set_val(DOA_H,100);
+    wait(40);
+    wait(800);
+    set_val(PS4_UP,100);
+    wait(40);
+    wait(40);
+    set_val(Left,100);
+    wait(40);
+    wait(40);
+    set_val(PS4_DOWN,100);
+    wait(40);
+    wait(40);
+    set_val(Right,100);
+    wait(40);
+    wait(40);
+    set_val(PS4_UP,100);
+    set_val(DOA_H,100);
+    wait(40);
+    wait(40);
+} // end combo
+
+combo Izuna  {
+    set_val(Left,100);
+    wait(40);
+    wait(40);
+    set_val(PS4_DOWN,100);
+    wait(40);
+    wait(40);
+    set_val(Right,100);
+    set_val(DOA_T,100);
+    wait(40);
+    wait(500);
+    set_val(PS4_DOWN,100);
+    wait(40);
+    wait(40);
+    set_val(Right,100);
+    wait(40);
+    wait(40);
+    set_val(PS4_UP,100);
+    set_val(DOA_T,100);
+    wait(40);
+    wait(500);
+    set_val(PS4_UP,100);
+    wait(40);
+    wait(40);
+    set_val(Left,100);
+    wait(40);
+    wait(40);
+    set_val(PS4_DOWN,100);
+    wait(40);
+    wait(40);
+    set_val(Right,100);
+    wait(40);
+    wait(40);
+    set_val(PS4_UP,100);
+    set_val(DOA_T,100);
+    wait(40);
+    wait(40);
+} // end combo
+
+combo Mekkyaku  {
+    set_val(DOA_T,100);
+    wait(40);
+    wait(500);
+    
+    set_val(Left,100);
+    wait(40);
+    wait(40);
+    set_val(PS4_DOWN,100);
+    wait(40);
+    wait(40);
+    set_val(Right,100);
+    wait(40);
+    wait(40);
+    set_val(PS4_UP,100);
+    set_val(DOA_T,100);
+    wait(40);
+    wait(500);
+
+	set_val(PS4_UP,100);
+    wait(40);
+    wait(40);
+    set_val(Left,100);
+    wait(40);
+    wait(40);
+    set_val(PS4_DOWN,100);
+    wait(40);
+    wait(40);
+    set_val(Right,100);
+    wait(40);
+    wait(40);
+    set_val(PS4_UP,100);
+    set_val(DOA_T,100);
+    wait(40);
+    wait(40);
+} // end combo
+
+
+combo Yoko { 
+	set_val(Right,100);
+    set_val(PS4_DOWN,100);
+    wait(40);
+    wait(40);
+
+	set_val(Right,100);
+    set_val(PS4_DOWN,100);
+    set_val(DOA_T,100);
+    wait(40);
+    wait(500);
+
+	set_val(PS4_DOWN,100);
+    wait(40);
+    wait(40);
+    set_val(Right,100);
+    wait(40);
+    wait(40);
+    set_val(PS4_UP,100);
+    set_val(DOA_T,100);
+    wait(40);
+    wait(500);
+
+	set_val(PS4_UP,100);
+    wait(40);
+    wait(40);
+    set_val(Left,100);
+    wait(40);
+    wait(40);
+    set_val(PS4_DOWN,100);
+    wait(40);
+    wait(40);
+    set_val(Right,100);
+    wait(40);
+    wait(40);
+    set_val(PS4_UP,100);
+    set_val(DOA_T,100);
+    wait(40);
+    wait(40);
+} // end combo
+
+combo IzunaPunch  {
+    set_val(DOA_PK,100);
+    wait(110);
+    wait(90);
+    set_val(PS4_TRIANGLE,100);
+    wait(70);
+    wait(80);
+    set_val(PS4_TRIANGLE,100);
+    wait(70);
+    wait(50);
+    set_val(PS4_RIGHT,100);
+    wait(70);
+    wait(60);
+    set_val(PS4_UP,100);
+    wait(50);
+    wait(20);
+    set_val(PS4_LEFT,100);
+    wait(10);
+    wait(70);
+    set_val(PS4_DOWN,100);
+    wait(60);
+    wait(50);
+    set_val(PS4_RIGHT,100);
+    wait(60);
+    wait(50);
+    set_val(PS4_UP,100);
+    wait(20);
+    set_val(PS4_LEFT,100);
+    wait(20);
+    set_val(PS4_DOWN,100);
+    set_val(PS4_LEFT,100);
+    wait(10);
+    set_val(PS4_DOWN,100);
+    wait(50);
+    wait(50);
+    set_val(PS4_RIGHT,100);
+    set_val(DOA_T,100);
+    wait(30);
+    set_val(DOA_T,100);
+    wait(40);
+} // end combo
