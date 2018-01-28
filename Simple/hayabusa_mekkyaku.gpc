@@ -1,9 +1,46 @@
-	
+
+/* equivalent direction: a gauche =  4...
+diagonal avant bas = 3
+
+  7  8  9
+   \ | /
+ 4 - 5 - 6
+   / | \
+  1  2  3
+
+*/   
+
+
+/*
+Config des combos : tout sur le joystick R3
+
+
+		    7  H  9
+		     \ | /
+ Izuna Throw - 5 - Izuna punch
+		     / | \
+     mekkyaku  H  Yoko
+
+
+*/
+
+
+/* 
+
+Pour le Mekkyaku et l'izuna punch il faut se mettre en position ongyoin (bas et P+K) et ensuite
+lancer le combo 
+
+
+
+*/
+
+
 // PHASE initialisation du script
 // ------------------------------
 	// Constantes: Les constantes ne peuvent pas etre modifiées
 	//-----------
     // Config Sandy
+/*    
 define DOA_H  = PS4_CROSS
 define DOA_T  = PS4_R1
 define DOA_P  = PS4_TRIANGLE
@@ -11,7 +48,7 @@ define DOA_K  = PS4_CIRCLE
 define DOA_PK = PS4_SQUARE
 define DOA_HK = PS4_L2
 
-/*
+/*/
     // Config Laurent
     
 define DOA_H  = PS4_SQUARE
@@ -20,7 +57,7 @@ define DOA_P  = PS4_TRIANGLE
 define DOA_K  = PS4_CIRCLE
 define DOA_PK = PS4_L1
 define DOA_HK = PS4_R1
-*/
+//*/
 
 
 	// variables
@@ -80,50 +117,36 @@ main {
                                                                                                 
    	// LowH = R3 vers le bas 
    	// ---------------------
-   	else if ((get_val (PS4_RY) >= 70) && ! combo_running(LowH)) {
-   		cancel = 1;
+   	else if ((get_val (PS4_RY) >= 70) && (abs(get_val (PS4_RX)) <= 20) && ! combo_running(LowH)) {
    		combo_run (LowH);
    	}
  
    	// HighH = R3 vers le Haut                   
     // -----------------------
-   	else if ((get_val (PS4_RY) <= -70) && ! combo_running(HighH)) {
-   		cancel = 1;
+   	else if ((get_val (PS4_RY) <= -70) && (abs(get_val (PS4_RX)) <= 20) && ! combo_running(HighH)) {
    		combo_run (HighH);
    	}
 
-
-    // Yokko = appuie sur R3   
-    // ------------------------
-   	if  ((get_val(PS4_R3)) && ! combo_running(Yoko)) {
-   		cancel = 3;  	// cancel sur 3 car pression sur R3
-   		combo_run(Yoko);	// lancement du combo si la variable = FAUX
+    // Izuna  = R3 vers la gauche (4)   
+    // ------------------------------
+   	else if  ((get_val (PS4_RX) <= -70)  && (abs(get_val (PS4_RY)) <= 20) && ! combo_running(Izuna)) {
+   		combo_run(Izuna);
    	}
-
-
- 	// Izuna = L3 vers le haut
-    else if ((get_val (PS4_LY) <= -70) && ! combo_running(Izuna)) {
-    	cancel = 2;						// = 2 car c'est L3 qui a bougé
-    	combo_run (Izuna);
-    }
     
-    // IzunaPunch = L3 vers le bas 
-    else if ((get_val (PS4_LY) >= 70) && ! combo_running(IzunaPunch)) {
-    	cancel = 2;						// = 2 car c'est R3 qui a bougé
+    // IzunaPunch = R3 vers la droite (6) 
+    else if ((get_val (PS4_RX) >= 70) && (abs(get_val (PS4_RY)) <= 20) && ! combo_running(IzunaPunch)) {
     	combo_run (IzunaPunch);
     }
 
- 	// Mekkyaku = L3 vers la Gauche (ou vers la gauche je sais pas)
+ 	// Mekkyaku = R3 en diagonale bas gauche (touche sur clavier 1)
  	
-    else if ((get_val (PS4_LX) <= -70) && ! combo_running(Mekkyaku)) {
-    	cancel = 2;						// = 2 car c'est L3 qui a bougé
+    else if ((get_val (PS4_RX) <= -70) && (get_val (PS4_RY) >= 70) && ! combo_running(Mekkyaku)) {
     	combo_run (Mekkyaku);
     }
 
- 	// Mekkyaku = L3 vers la Droite (ou vers la gauche je sais pas)
+ 	// Yokko = R3 en diagonale bas droite (touche 3)
  	
-    else if ((get_val (PS4_LX) >= 70) && ! combo_running(Yoko)) {
-    	cancel = 2;						// = 2 car c'est L3 qui a bougé
+    else if ((get_val (PS4_RX) >= 70) && (get_val (PS4_RY) >= 70) && ! combo_running(Yoko)) {
     	combo_run (Yoko);
     }
 
@@ -135,54 +158,17 @@ main {
   //
   // ------------------------------------------------ 
  	
- 	//  Note: 
- 	// 	La version précédente du script faisait tourner combo_stop 
- 	//  tout le temps, car L3 et R3 ne bougent presque jamais.
- 	//  Avec la variable cancel on ne lance combo_stop uniquement
- 	//  si L3 ou R3 ont bougé
- 	// -------------------------------------
- 	
- 	// Detecter si cancel est a 1 ou 2 
- 	if (cancel == 1) {  // C'est R3 qui a bougé
 
 	    // Si R3 n'est plus vers la gauche (RX) ni en haut ni en bas (RY)
-	    // ancienne ligne 
-	    // 		if ((abs(get_val (PS4_LX)) <= 20) && (abs(get_val (PS4_LY)) <= 20)) {
-	    
-	    // nouvelle Ligne
 	    if ((abs(get_val (PS4_RX)) <= 20) && (abs(get_val (PS4_RY)) <= 20)) {	    
-            combo_stop(LowH);		// Arrêt des 2 combos      
-            combo_stop(HighH);		// même s'ils ne sont pas lancés
-            cancel=0;				// on re initialise cancel pour le prochain
-	    }  	
- 	}
-  	else if (cancel == 2) { // c'est L3 qui a bougé
-	    // Detecter si LX ou LY est revenu en position de départ
-	    // ancienne ligne:
-		//	   if ((abs(get_val(PS4_RX)) < 20)&&(abs(get_val (PS4_RY)) <= 20)) {
-
-	    // nouvelle Ligne
-		if ((abs(get_val(PS4_LX)) < 20)&&(abs(get_val (PS4_LY)) <= 20)) {
+            combo_stop(LowH);
+            combo_stop(HighH);	
 	   		combo_stop(Izuna);  // arret du combo Izuna
 	   		combo_stop(IzunaPunch);
 	   		combo_stop(Mekkyaku);
 	   		combo_stop(Yoko);
-            cancel=0;				// on re initialise cancel pour le prochain
-	   	}
- 	}
-   	else if (cancel == 3){	// pression sur R3
-   		if (abs(get_val(PS4_R3)<20)){	// si le bouton est relaché
-   			// combo_stop(MidH);
-   			cancel=0;
-   		}
-   	}
-   	else if (cancel == 4){	// pression sur L3
-   		if (abs(get_val(PS4_L3)<20)){	// si le bouton est relaché
-   			combo_stop(IzunaPunch);
-   			cancel=0;
-   		}
-	}
-
+	    }  	
+ 
   // ------------------------------------------------
   //
   // Partie 4: blocage des touches
@@ -374,7 +360,7 @@ combo Mekkyaku  {
     set_val(PS4_UP,100);
     set_val(DOA_T,100);
     wait(40);
-    wait(500);
+    wait(40);
 
 	set_val(PS4_UP,100);
     wait(40);
@@ -416,7 +402,7 @@ combo Yoko {
     set_val(PS4_UP,100);
     set_val(DOA_T,100);
     wait(40);
-    wait(500);
+    wait(550);
 
 	set_val(PS4_UP,100);
     wait(40);
